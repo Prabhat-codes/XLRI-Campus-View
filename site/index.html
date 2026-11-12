@@ -56,17 +56,17 @@
 <div class="panel" id="info" hidden role="status"></div>
 
 <div class="panel" id="search" hidden>
-  <input id="search-input" type="search" placeholder="Search food, printouts, hostels…" autocomplete="off" spellcheck="false" aria-label="Search places">
+  <input id="search-input" type="search" placeholder="Search places, dishes, restaurants…" autocomplete="off" spellcheck="false" aria-label="Search places">
   <div id="search-results" role="listbox" aria-label="Results"></div>
 </div>
 
-<button class="panel" id="chat-btn" aria-controls="chat"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Ask XLRI</button>
+<button class="panel" id="chat-btn" aria-controls="chat"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Ask anything</button>
 <section class="panel" id="chat" hidden aria-label="Campus assistant">
-  <header><div><strong>Ask XLRI</strong><span>Timings, numbers and where things are</span></div><button id="chat-close" aria-label="Close assistant">×</button></header>
+  <header><div><strong>Ask anything</strong><span>Campus life and food around Jamshedpur</span></div><button id="chat-close" aria-label="Close assistant">×</button></header>
   <div id="chat-main">
     <div id="chat-log" aria-live="polite"></div>
     <div id="chat-chips"></div>
-    <form id="chat-form"><input id="chat-input" placeholder="Ask anything about campus…" autocomplete="off" aria-label="Your question"><button type="submit">Send</button></form>
+    <form id="chat-form"><input id="chat-input" placeholder="Ask about campus or food in town…" autocomplete="off" aria-label="Your question"><button type="submit">Send</button></form>
     <button id="fb-open" type="button">Want to improve this map? Tell us how</button>
   </div>
   <form id="fb" hidden>
@@ -123,6 +123,7 @@
     <li><b>Trees:</b> placed wherever the satellite image shows canopy; individual trees are not surveyed.</li>
     <li><b>Neighbourhood labels:</b> positioned approximately.</li>
     <li><b>Timings and phone numbers:</b> shared by students; they can change, so call ahead.</li>
+    <li><b>Restaurants in town:</b> dish picks gathered from a student group chat; names, locations and ratings from Google Maps (November 2026). Opening hours not checked.</li>
   </ul>
   <p class="small">An unofficial fan project, not affiliated with XLRI.</p>
   <form method="dialog"><button>Close</button></form>

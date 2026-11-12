@@ -37,13 +37,37 @@ export const norm = (s) => s.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g,
 const STOP = new Set(('a an the is are am was be to of in on at for from by with and or i im me my we you u can could would should do does did ' +
   'get got find where wheres what whats which who how any anything some something please pls plz there here near nearby around good best nice ' +
   'place places spot campus xlri want need have has it its this that tell show give know about one ones serve serves serving sell sells selling ' +
-  'buy eat drink having available go going hey hi hello s t d ll re ve m right').split(' '));
+  'buy eat drink having available go going hey hi hello s t d ll re ve m right order try dish dishes must menu recommend recommended famous known special eating').split(' '));
+// words that just mean "somewhere to eat in town", not a particular dish
+const GENERIC_FOOD = new Set('food foods restaurant restaurants jamshedpur town city outside dinner lunch dine dining out outing treat cuisine options option suggest suggestion suggestions'.split(' '));
+const TOWN_RE = /\b(jamshedpur|town|city|outside|bistupur|sonari|sakchi|restaurant|restaurants|eat out|dine|dining|date)\b/;
 const TIME_WORDS = new Set('open opened opening close closes closed closing now right currently timing timings time times hours hour when till until still today tonight morning evening'.split(' '));
 const stem = (t) => (t.length > 3 && t.endsWith('s') ? t.slice(0, -1) : t);
 
 let PLACES = [];
 const byName = new Map();
 
+// two-word phrases that mean one thing: "south indian" should not also match plain "indian" places
+const COMPOUNDS = ['south indian', 'north indian', 'non veg', 'late night', 'pure veg', 'table tennis', 'eat out', 'middle eastern'];
+// words for a kind of food, and the dish names that belong to it
+const CATEGORY = [
+  [/\b(dessert|desserts|sweet|sweets|cake)\b/, /cheesecake|tiramisu|pastry|lava|tres leches|panna cotta|affogato|custard|pudding|phirni|shahi tukda|khunafah|cookie|hot chocolate|cake/],
+  [/\b(beer|bar|bars|drinks|cocktail|cocktails|booze|alcohol)\b/, /\bbeer\b|cocktail|\bgin\b|mojito|margherita/],
+  [/\bsouth indian\b/, /dosa|idli|vada|uttapam|curd rice/],
+  [/\bnorth indian\b/, /naan|dal makhani|butter chicken|paneer|kulch|biryani|tikka|kebab|chaap|rogan josh|nihari/],
+  [/\b(italian)\b/, /pasta|pizza|lasagna|spaghetti|ravioli|bruschetta/],
+  [/\b(chinese|asian)\b/, /momo|noodle|manchurian|manchow|thukpa|dumpling|gyoza|khao suey/],
+  [/\b(coffee|cafe)\b/, /coffee|\blatte\b|affogato/],
+  [/\b(seafood)\b/, /prawn|fish/],
+  [/\b(sushi|japanese)\b/, /sushi|tempura/],
+  [/\b(lebanese|middle eastern|arabic)\b/, /shish|taouk|tawook|lebanese|hummus|falafel|shawarma|khunafah/],
+];
+const words = (s) => s.split(' ').map(stem);
+function queryTokens(qn) {
+  let rest = qn;
+  for (const c of COMPOUNDS) rest = rest.replace(new RegExp('\\b' + c + '\\b', 'g'), ' ');
+  return rest.split(' ').filter((t) => t && !STOP.has(t) && !TIME_WORDS.has(t));
+}
 function scorePlace(p, qn, tokens) {
   let s = 0;
   const nn = norm(p.name);
@@ -51,22 +75,37 @@ function scorePlace(p, qn, tokens) {
   for (const a of p._aliases) { if (a === qn) s += 100; else if (qn.length > 2 && a.startsWith(qn)) s += 50; }
   const padded = ' ' + qn + ' ';
   for (const t of p._tags) {
-    if (t.includes(' ') && padded.includes(' ' + t + ' ')) s += 35;
+    if (t.includes(' ') && padded.includes(' ' + t + ' ')) s += 35;      // a whole phrase like "south indian"
+    const tw = words(t);
     for (const tok of tokens) {
       const st = stem(tok);
-      if (t === tok || t === st || stem(t) === st) s += 24;
-      else if (tok.length >= 3 && t.startsWith(st)) s += 10;
-      else if (tok.length >= 4 && t.includes(st)) s += 5;
+      if (tw.includes(st)) s += t.includes(' ') ? 12 : 24;                // whole word, plurals folded
+      else if (st.length >= 4 && tw.some((w) => w.startsWith(st))) s += 6; // "stationer" -> "stationery"
     }
   }
-  for (const tok of tokens) if (tok.length >= 4 && p._desc.includes(stem(tok))) s += 3;
+  for (const tok of tokens) if (tok.length >= 4 && words(p._desc).includes(stem(tok))) s += 3;
+  if (p._dishes) s += matchDishes(p, qn, tokens).length * 14;
   return s;
 }
+// restaurant dishes that fit the question: every query word in the dish name if possible
+// ("butter chicken"), otherwise any of them, plus dishes of a named kind ("dessert")
+function matchDishes(p, qn, tokens) {
+  if (!p._dishes) return [];
+  const want = tokens.filter((t) => t.length >= 3 && !GENERIC_FOOD.has(t)).map(stem);
+  const has = (i, t) => words(p._dishes[i]).includes(t);
+  let hit = want.length ? p.dishes.filter((d, i) => want.every((t) => has(i, t))) : [];
+  if (!hit.length && want.length > 1) hit = p.dishes.filter((d, i) => want.some((t) => has(i, t)) && !want.every((t) => /^(chicken|mutton|veg|paneer|fish)$/.test(t) || !has(i, t)));
+  for (const [q, dish] of CATEGORY) if (q.test(qn)) for (const d of p.dishes) if (dish.test(d.d.toLowerCase()) && !hit.includes(d)) hit.push(d);
+  return hit;
+}
+const dishText = (d) => d.d + (d.t ? ' (unconfirmed)' : '') + (d.mixed ? ' (mixed reviews)' : '');
+const ratingText = (r) => (r.rating ? `\u2605 ${r.rating}` : '');
 export function search(q, limit = 8) {
   const qn = norm(q);
   if (!qn) return [];
-  const tokens = qn.split(' ').filter((t) => !STOP.has(t) && !TIME_WORDS.has(t));
-  return PLACES.map((p) => ({ p, s: scorePlace(p, qn, tokens) })).filter((r) => r.s > 0)
+  const tokens = queryTokens(qn);
+  // campus places get a head start so a dish search still shows what's on campus first
+  return PLACES.map((p) => { const sc = scorePlace(p, qn, tokens); return { p, s: sc > 0 && p.kind !== 'restaurant' ? sc + 20 : sc }; }).filter((r) => r.s > 0)
     .sort((a, b) => b.s - a.s).slice(0, limit).map((r) => r.p);
 }
 function mentioned(qn) {
@@ -81,7 +120,8 @@ const byOpen = (list, now) => list.map((p) => ({ p, st: status(p, now) })).sort(
 export function answer(q, now = nowIST()) {
   const qn = norm(q);
   const words = new Set(qn.split(' '));
-  const wantsPhone = /\b(number|numbers|phone|call|contact|mobile|whatsapp|delivery|deliver|order)\b/.test(qn);
+  const wantsPhone = /\b(number|numbers|phone|call|contact|mobile|whatsapp|delivery|deliver)\b/.test(qn);
+  const town = TOWN_RE.test(qn);
   const wantsTime = [...words].some((w) => TIME_WORDS.has(w)) || /\bwhat s open\b/.test(qn);
   const topic = qn.split(' ').filter((t) => t && !STOP.has(t) && !TIME_WORDS.has(t) && !/^(number|numbers|phone|call|contact|mobile)$/.test(t));
   const clock = `It's ${fmtTime(now)} on campus.`;
@@ -92,6 +132,12 @@ export function answer(q, now = nowIST()) {
   const named = mentioned(qn);
   if (named.length && named.length <= 4) {
     const items = named.map((p) => {
+      if (p.kind === 'restaurant') {
+        if (wantsPhone) return { place: p, line: "I don't have their number. Google Maps has it:", link: p.mapsUrl };
+        if (wantsTime) return { place: p, line: "I haven't checked their opening hours. Google Maps has them:", link: p.mapsUrl };
+        const sure = p.dishes.filter((d) => !d.t).slice(0, 6).map(dishText), maybe = p.dishes.filter((d) => d.t).slice(0, 5).map((d) => d.d);
+        return { place: p, line: `${p.closed ? p.closed + '. ' : ''}${ratingText(p)} · ${p.area}. ${sure.length ? 'Recommended: ' + sure.join(', ') + '. ' : ''}${maybe.length ? 'Possible, unconfirmed: ' + maybe.join(', ') + '.' : ''}${p.skip.length ? ' Skip: ' + p.skip.map((d) => d.d).join(', ') + '.' : ''}`, link: p.mapsUrl };
+      }
       const st = status(p, now);
       if (wantsPhone) return { place: p, line: p.phone ? '' : `I don't have a number for ${p.name} yet.`, phone: p.phone, phoneLabel: p.phoneLabel };
       const line = [st.text || (wantsTime ? NOT_SURE : ''), p.hours ? `(${hoursText(p)})` : ''].filter(Boolean).join(' ');
@@ -118,8 +164,28 @@ export function answer(q, now = nowIST()) {
     };
   }
 
-  // 4. looking for something: food, printouts, juice...
-  const hits = search(q, 6);
+  // 4a. "where should I eat in Jamshedpur?" with no particular dish
+  if (town && topic.every((t) => GENERIC_FOOD.has(t))) {
+    const top = PLACES.filter((p) => p.kind === 'restaurant').sort((a, b) => (b.rating || 0) - (a.rating || 0) || (b.reviews || 0) - (a.reviews || 0)).slice(0, 8);
+    return {
+      intro: 'Good places to eat around Jamshedpur, best rated first:',
+      items: top.map((p) => ({ place: p, line: `${ratingText(p)} · ${p.area}. Known for ${p.dishes.slice(0, 2).map((d) => d.d).join(', ') || 'South Indian and breakfast'}.`, link: p.mapsUrl })),
+      outro: 'Ask "what\u2019s good at Mocha?" for the full picks at any of them.',
+    };
+  }
+
+  // 4b. looking for something: a dish, printouts, juice...
+  const all = search(q, 14);
+  const tokens = queryTokens(qn);
+  const inTown = all.filter((p) => p.kind === 'restaurant').slice(0, 5);
+  const hits = town ? [] : all.filter((p) => p.kind !== 'restaurant').slice(0, 6);
+  const townItems = inTown.map((p) => {
+    const m = matchDishes(p, qn, tokens);
+    return { place: p, line: `${m.length ? m.slice(0, 3).map(dishText).join(', ') : 'Known for ' + (p.dishes.slice(0, 2).map((d) => d.d).join(', ') || 'South Indian and breakfast')} · ${ratingText(p)}, ${p.area}`, link: p.mapsUrl };
+  });
+  if (!hits.length && townItems.length) {
+    return { intro: 'Around Jamshedpur:', items: townItems, outro: wantsTime ? "I haven't checked restaurant opening hours." : '' };
+  }
   if (hits.length) {
     const ranked = byOpen(hits, now);
     const open = ranked.filter((r) => r.st.state === 'open' || r.st.state === 'likely');
@@ -131,13 +197,13 @@ export function answer(q, now = nowIST()) {
     const rest = wantsTime && open.length ? ranked.filter((r) => !open.includes(r)) : [];
     return {
       intro,
-      items: list.map((r) => item(r.p, r.st, { phone: wantsPhone || !!r.p.phone })),
+      items: list.map((r) => item(r.p, r.st, { phone: wantsPhone || !!r.p.phone })).concat(townItems.length ? [{ heading: 'In Jamshedpur' }, ...townItems] : []),
       outro: rest.length ? 'Also: ' + rest.map((r) => `${r.p.name}${r.st.text ? ` (${r.st.text.replace('Closed now · ', '')})` : ''}`).join(', ') + '.' : '',
     };
   }
 
   return {
-    intro: "I don't know that one yet. Try asking about food, printouts, juice, stationery, the library, the gym, a phone number, or what's open right now. If something's missing, tap \"Want to improve this map?\" below and tell us.",
+    intro: "I don't know that one yet. Try asking about food on campus or in town, a dish, printouts, juice, stationery, the library, the gym, a phone number, or what's open right now. If something's missing, tap \"Want to improve this map?\" below and tell us.",
     items: [], outro: '',
   };
 }
@@ -152,16 +218,48 @@ function phoneLink(phone, label) {
 function statusPill(st) { return st.text ? el('span', 'pill ' + st.state, st.text) : null; }
 
 // ---------------------------------------------------------------- setup
-export function setupPlaces(data, { goTo }) {
-  PLACES = (data.places || []).map((p) => ({ ...p, _aliases: (p.aliases || []).map(norm), _tags: (p.tags || []).map(norm), _desc: norm(p.desc || '') }));
+export function setupPlaces(data, { goTo }, food = {}) {
+  const restaurants = food.restaurants || [];
+  PLACES = (data.places || []).map((p) => ({ ...p, _aliases: (p.aliases || []).map(norm), _tags: (p.tags || []).map(norm), _desc: norm(p.desc || '') }))
+    .concat(restaurants.map((r) => ({
+      ...r, kind: 'restaurant', hours: null, phone: null,
+      desc: `Restaurant in ${r.area}. ${r.dishes.length ? 'Known for ' + r.dishes.slice(0, 2).map((d) => d.d).join(', ') + '.' : ''}`,
+      _aliases: (r.aliases || []).map(norm), _tags: (r.tags || []).map(norm), _desc: norm(r.address || ''), _dishes: r.dishes.map((d) => norm(d.d)),
+    })));
   for (const p of PLACES) byName.set(p.name, p);
 
   // --- info card: hover previews, click pins
   const card = $('info');
   let pinned = null, hideTimer = 0;
+  function renderRestaurant(p) {
+    card.append(el('strong', null, p.name));
+    if (p.rating) card.append(el('span', 'pill rating', `\u2605 ${p.rating} \u00b7 ${(p.reviews || 0).toLocaleString('en-IN')} Google reviews`));
+    if (p.closed) card.append(el('span', 'pill closed', p.closed));
+    card.append(el('p', 'hours', p.address));
+    const list = (title, items) => {
+      if (!items.length) return;
+      card.append(el('div', 'sub', title));
+      const ul = el('ul', 'dishes');
+      for (const d of items) {
+        const li = el('li', d.c === 'high' && !d.t ? 'hi' : null, d.d);
+        if (d.mixed) li.append(el('span', 'mixed', ' mixed reviews'));
+        ul.append(li);
+      }
+      card.append(ul);
+    };
+    list('Recommended', p.dishes.filter((d) => !d.t));
+    list('Possible, unconfirmed', p.dishes.filter((d) => d.t));
+    if (p.skip.length) card.append(el('p', 'skip', 'Skip: ' + p.skip.map((d) => d.d + (d.why ? ` (${d.why})` : '')).join('; ')));
+    for (const n of p.notes.slice(0, 2)) card.append(el('p', 'note', n));
+    const a = el('a', 'phone', 'Open in Google Maps \u2197');
+    a.href = p.mapsUrl; a.target = '_blank'; a.rel = 'noopener';
+    card.append(a);
+    card.hidden = false;
+  }
   function render(l) {
     const p = byName.get(l.n);
     card.replaceChildren();
+    if (p && p.kind === 'restaurant') return renderRestaurant(p);
     card.append(el('strong', null, l.n));
     const st = statusPill(status(p));
     if (st) card.append(st);
@@ -196,7 +294,7 @@ export function setupPlaces(data, { goTo }) {
 
   // --- search
   const sBox = $('search'), sIn = $('search-input'), sRes = $('search-results');
-  const SUGGEST = ['South Indian', 'Printouts', 'Juice', 'Late night food', 'Stationery', 'Gym', 'Coffee', 'Hostels', 'Parties'];
+  const SUGGEST = ['South Indian', 'Printouts', 'Juice', 'Late night food', 'Pasta', 'Momos', 'Dessert', 'Stationery', 'Gym', 'Hostels', 'Parties'];
   function drawResults() {
     sRes.replaceChildren();
     const q = sIn.value.trim();
@@ -213,10 +311,17 @@ export function setupPlaces(data, { goTo }) {
       b.setAttribute('role', 'option');
       const top = el('div', 'r-top');
       top.append(el('span', 'r-name', p.name));
-      const st = statusPill(status(p));
+      const st = p.kind === 'restaurant' ? (p.rating ? el('span', 'pill rating', `\u2605 ${p.rating}`) : null) : statusPill(status(p));
       if (st) top.append(st);
       b.append(top);
       const qn = norm(q);
+      if (p.kind === 'restaurant') {
+        const m = matchDishes(p, qn, queryTokens(qn));
+        b.append(el('div', 'r-sub', `${m.length ? m.slice(0, 2).map((d) => d.d).join(', ') + ' \u00b7 ' : ''}${p.area}`));
+        b.addEventListener('click', () => { closeSearch(); goTo(p.name); });
+        sRes.append(b);
+        return;
+      }
       const tag = (p.tags || []).find((t) => norm(t).includes(stem(qn)) || qn.includes(norm(t)));
       b.append(el('div', 'r-sub', tag && norm(p.name).indexOf(qn) < 0 ? `${tag} · ${p.desc}` : p.desc || ''));
       b.addEventListener('click', () => { closeSearch(); goTo(p.name); });
@@ -252,8 +357,9 @@ export function setupPlaces(data, { goTo }) {
 
   // --- assistant
   const chat = $('chat'), log = $('chat-log'), form = $('chat-form'), input = $('chat-input'), chips = $('chat-chips');
-  const PRESETS = ["What's open right now?", 'Where can I get printouts?', 'Best South Indian?', 'Late night food', "Jampot's number",
-    'Is the library open?', 'Where do I get juice?', 'Where is the gym?', 'Stationery shop', 'Where are the parties?', 'All phone numbers'];
+  const PRESETS = ["What's open right now?", 'Where to eat in Jamshedpur?', "What's good at Mocha?", 'Best pasta in town', 'Where can I get printouts?',
+    'Best South Indian?', 'Late night food', 'Best momos', 'Dessert in town', 'Bar for beer', "Jampot's number", 'Is the library open?',
+    'Where do I get juice?', 'Where is the gym?', 'Stationery shop', 'Where are the parties?', 'All phone numbers'];
   function say(who, content) {
     const m = el('div', 'msg ' + who);
     if (typeof content === 'string') m.textContent = content; else m.append(content);
@@ -268,6 +374,7 @@ export function setupPlaces(data, { goTo }) {
     if (a.items.length) {
       const ul = el('ul');
       for (const it of a.items) {
+        if (it.heading) { ul.append(el('li', 'heading', it.heading)); continue; }
         const li = el('li');
         const go = el('button', 'go', it.place.name);
         go.title = 'Show on map';
@@ -275,6 +382,7 @@ export function setupPlaces(data, { goTo }) {
         li.append(go);
         if (it.line) li.append(el('span', null, ' ' + it.line));
         if (it.phone) { li.append(' '); li.append(phoneLink(it.phone, it.phoneLabel)); }
+        if (it.link) { const m = el('a', 'maplink', 'Maps \u2197'); m.href = it.link; m.target = '_blank'; m.rel = 'noopener'; li.append(' ', m); }
         ul.append(li);
       }
       box.append(ul);
@@ -287,7 +395,7 @@ export function setupPlaces(data, { goTo }) {
   form.addEventListener('submit', (e) => { e.preventDefault(); const q = input.value.trim(); if (!q) return; input.value = ''; reply(q); });
   function openChat() {
     chat.hidden = false; $('chat-btn').hidden = true;
-    if (!log.childElementCount) say('bot', `Hi! Ask me where to eat, get printouts or juice, what's open right now (it's ${fmtTime(nowIST())} on campus), or for a phone number.`);
+    if (!log.childElementCount) say('bot', `Hi! Ask me anything about campus or food around Jamshedpur: what's open right now (it's ${fmtTime(nowIST())}), where to get printouts, what's good at Mocha, the best pasta in town, or a phone number.`);
     input.focus();
   }
   $('chat-btn').addEventListener('click', openChat);
@@ -317,5 +425,5 @@ export function setupPlaces(data, { goTo }) {
   });
   $('chat-close').addEventListener('click', () => { chat.hidden = true; $('chat-btn').hidden = false; });
 
-  return { get: (n) => byName.get(n), showCard, hideCard, openSearch };
+  return { get: (n) => byName.get(n), showCard, hideCard, openSearch, restaurants };
 }

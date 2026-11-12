@@ -340,7 +340,7 @@ def main():
         dd, qx, qy, ang, wd = best
         print("gate", g["name"], "snapped", round(dd, 1), "m")
         gates.append({"n": g["name"], "x": round(qx, 2), "y": round(qy, 2), "a": round(ang, 4), "w": wd})
-        labels.append({"n": g["name"], "x": round(qx, 1), "y": round(qy, 1), "h": 0, "k": "campus", "d": g["desc"]})
+        labels.append({"n": g["name"], "x": round(qx, 1), "y": round(qy, 1), "h": 7, "k": "campus", "d": g["desc"]})
     print("roads", len(roads), "water", len(water), "labels", len(labels))
 
     # ---------------- trees from the satellite image ----------------

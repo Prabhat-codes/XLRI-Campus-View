@@ -25,13 +25,16 @@ function step(msg) {
   if (msg) $('loader-msg').textContent = msg;
 }
 // bump DATA_VERSION whenever site/data changes, so browsers never mix new code with old cached data
-const DATA_VERSION = '4';
+const DATA_VERSION = '8';
 const D = (f) => `data/${f}?v=${DATA_VERSION}`;
 const texLoader = new THREE.TextureLoader();
 const loadTex = (url) => new Promise((res, rej) => texLoader.load(url, res, undefined, rej));
 
 // ---------------------------------------------------------------- renderer
 const coarse = matchMedia('(pointer: coarse)').matches || innerWidth < 760;
+// phones and low-memory devices get a lighter map: no MSAA, and the outer neighbourhoods are left out
+const LITE = coarse || (navigator.deviceMemory && navigator.deviceMemory <= 4);
+let keep = () => true;   // which footprints/trees to build; narrowed in boot() on LITE devices
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 0.62;
@@ -51,7 +54,7 @@ controls.maxPolarAngle = 84 * D2R;
 controls.zoomToCursor = true;
 controls.autoRotateSpeed = 0.5;
 
-const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(4, 4, { type: THREE.HalfFloatType, samples: 4 }));
+const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(4, 4, { type: THREE.HalfFloatType, samples: LITE ? 0 : 4 }));
 composer.addPass(new RenderPass(scene, camera));
 const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.15, 0.6, 1.0);
 composer.addPass(bloom);
@@ -99,23 +102,42 @@ const nightMats = [];   // materials that only show after dark
 let trees = null, treeCount = 0;
 
 async function boot() {
-  const [m, bBuf, tBuf, ground, campusTex, placesData] = await Promise.all([
+  const [m, bBuf, tBuf, ground, campusTex, placesData, foodData] = await Promise.all([
     fetch(D('meta.json')).then((r) => r.json()).then((v) => (step('Laying out streets'), v)),
     fetch(D('buildings.bin')).then((r) => r.arrayBuffer()).then((v) => (step('Reading building footprints'), v)),
     fetch(D('trees.bin')).then((r) => r.arrayBuffer()).then((v) => (step('Counting trees'), v)),
     loadTex(D('ground.jpg')).then((v) => (step('Unrolling the satellite image'), v)),
     loadTex(D('campus.jpg')).then((v) => (step('Sharpening the campus'), v)),
     fetch(D('places.json')).then((r) => (r.ok ? r.json() : { places: [] })).catch(() => ({ places: [] })),
+    fetch(D('restaurants.json')).then((r) => (r.ok ? r.json() : { restaurants: [] })).catch(() => ({ restaurants: [] })),
   ]);
   meta = m;
-  PL = setupPlaces(placesData, { goTo });
+  PL = setupPlaces(placesData, { goTo }, foodData);
   buildGround(ground, campusTex);
   buildWater();
   await nextFrame();
   const t0 = performance.now();
+  if (LITE) {
+    // keep campus, Bistupur and Sakchi (south of the Subarnarekha, east of Kadma/Sonari),
+    // plus a little around every restaurant pin; skip the rest
+    const pins = (PL.restaurants || []).map((r) => [(r.lng - meta.origin[1]) * meta.mx, (r.lat - meta.origin[0]) * meta.my]);
+    keep = (x, y) => (x > -1350 && y < 720) || pins.some(([px, py]) => Math.abs(px - x) < 300 && Math.abs(py - y) < 300);
+  }
   buildBuildings(new Int16Array(bBuf));
   const t1 = performance.now();
-  buildTrees(new Int16Array(tBuf));
+  // Trees only where the site points at something: thinned around campus and labelled places,
+  // gone elsewhere (the satellite ground already shows the greenery there, and it keeps buildings readable)
+  const spots = meta.labels.filter((l) => l.k === 'campus' || l.k === 'poi').map((l) => [l.x, l.y])
+    .concat((PL.restaurants || []).map((r) => [(r.lng - meta.origin[1]) * meta.mx, (r.lat - meta.origin[0]) * meta.my]));
+  const tr0 = new Int16Array(tBuf), out = [];
+  for (let i = 0; i < tr0.length; i += 4) {
+    const x = tr0[i] / 10, y = tr0[i + 1] / 10, r = hash(i * 0.37 + 1.7);
+    if (!keep(x, y)) continue;
+    const core = Math.hypot(x, y) < 650;                                   // XLRI campus itself
+    const near = core || spots.some(([sx, sy]) => Math.abs(sx - x) < 160 && Math.abs(sy - y) < 160);
+    if (near && r < (core ? 0.6 : 0.45)) out.push(tr0[i], tr0[i + 1], tr0[i + 2], tr0[i + 3]);
+  }
+  buildTrees(Int16Array.from(out));
   window.__map.timing = { buildingsMs: Math.round(t1 - t0), treesMs: Math.round(performance.now() - t1) };
   buildRoads();
   await document.fonts.load('700 92px "Cormorant Garamond"').catch(() => {});   // the gate sign is drawn with it
@@ -215,6 +237,7 @@ function buildBuildings(d) {
   const stadiums = [];
   for (let o = 0; o < d.length;) {
     const n = d[o + 5];
+    if (!keep(d[o + 6] / 10, d[o + 7] / 10)) { o += 6 + n * 2; continue; }
     if (d[o] === 3) stadiums.push(o);
     else {
       const cx = clamp(Math.floor((d[o + 6] / 10 - bx0) / cw), 0, GRID - 1), cy = clamp(Math.floor((d[o + 7] / 10 - by0) / ch), 0, GRID - 1);
@@ -539,16 +562,20 @@ function buildRoadGlow() {
 const labels = [];
 function buildLabels() {
   const host = $('labels');
-  const rank = { home: -1, area: 0, water: 1, poi: 2, road: 2.5, campus: 3 };
-  for (const l of [{ n: 'XLRI', x: 0, y: 0, h: 0, k: 'home' }, ...meta.labels]) {
+  const rank = { home: -1, area: 0, water: 1, poi: 2, food: 2.2, road: 2.5, campus: 3 };
+  // restaurants in town get pins too, when they fall inside the mapped square
+  const [bx0, by0, bx1, by1] = meta.bounds;
+  const food = (PL.restaurants || []).map((r) => ({ n: r.name, x: (r.lng - meta.origin[1]) * meta.mx, y: (r.lat - meta.origin[0]) * meta.my, h: 3, k: 'food', cls: (r.confirmed ? '' : ' maybe') + (r.closed ? ' shut' : '') }))
+    .filter((l) => l.x > bx0 && l.x < bx1 && l.y > by0 && l.y < by1);
+  for (const l of [{ n: 'XLRI', x: 0, y: 0, h: 0, k: 'home' }, ...meta.labels, ...food]) {
     const el = document.createElement('div');
-    el.className = 'lb off ' + l.k + (l.d || PL.get(l.n) ? ' has-d' : '');
+    el.className = 'lb off ' + l.k + (l.cls || '') + (l.d || PL.get(l.n) ? ' has-d' : '');
     el.textContent = l.n;
     el.addEventListener('click', () => { flyToLabel(l); PL.showCard(l, true); });
     el.addEventListener('mouseenter', () => PL.showCard(l, false));
     el.addEventListener('mouseleave', () => PL.hideCard(false));
     host.appendChild(el);
-    labels.push({ ...l, el, pos: new THREE.Vector3(l.x, l.h + (l.k === 'area' || l.k === 'home' ? 30 : 9), -l.y), w: l.n.length * 7.2 + 22, rank: rank[l.k], shown: false });
+    labels.push({ ...l, el, pos: new THREE.Vector3(l.x, l.h + (l.k === 'area' || l.k === 'home' ? 30 : 1.5), -l.y), w: l.n.length * 7.2 + 22, rank: rank[l.k], shown: false });
   }
   labels.sort((a, b) => a.rank - b.rank);
 }
@@ -564,6 +591,7 @@ function updateLabels() {
     if (l.k === 'area') show &&= dist > 900;
     if (l.k === 'home') show &&= dist >= 2300;
     if (l.k === 'road') show &&= dist < 2600;
+    if (l.k === 'food') show &&= dist < 4200;
     let x = 0, y = 0;
     if (show) {
       v3.copy(l.pos).project(camera);
@@ -572,7 +600,7 @@ function updateLabels() {
       if (show && l.k === 'campus' && camera.position.distanceTo(l.pos) > 2600) show = false;
     }
     if (show) {
-      const box = [x - 6, y - 10, x + l.w, y + 10];
+      const box = [x - 6, y - 8, x + l.w, y + 8];
       if (taken.some((b) => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1])) show = false;
       else taken.push(box);
     }
@@ -616,12 +644,12 @@ function stepFly(now) {
 }
 function cancelFly() { if (fly) { fly = null; controls.enabled = true; } $('hint').classList.add('gone'); }
 function flyToLabel(l) {
-  flyTo({ x: l.x, y: l.y, dist: l.k === 'area' ? 1500 : l.k === 'campus' ? 260 : l.k === 'home' ? HOME.dist : 700, tilt: 58 });
+  flyTo({ x: l.x, y: l.y, dist: l.k === 'area' ? 1500 : l.k === 'campus' ? 260 : l.k === 'food' ? 320 : l.k === 'home' ? HOME.dist : 700, tilt: 58 });
 }
 // used by search and the assistant: fly to a named place and pin its card
 function goTo(name, quiet) {
   const l = labels.find((x) => x.n === name);
-  if (!l) return;
+  if (!l) { PL.showCard({ n: name }, true); return; }   // e.g. a restaurant just outside the map
   flyToLabel(l);
   if (!quiet || innerWidth > 760) PL.showCard(l, true);
 }
@@ -631,7 +659,7 @@ canvas.addEventListener('pointerdown', cancelFly);
 canvas.addEventListener('wheel', cancelFly, { passive: true });
 
 function buildPlaces() {
-  const at = (name) => meta.labels.find((l) => l.n === name);
+  const at = (name) => labels.find((l) => l.n === name);   // baked labels and restaurant pins
   const list = [
     HOME,
     { name: 'Learning Centre', ref: 'Learning Center 2', dist: 330, heading: 20, tilt: 62 },
@@ -646,6 +674,7 @@ function buildPlaces() {
     { name: 'Zoo', ref: 'Tata Zoological Park', dist: 700, heading: 100, tilt: 58 },
     { name: 'Keenan Stadium', ref: 'Keenan Stadium', dist: 620, heading: -30, tilt: 58 },
     { name: 'Subarnarekha', ref: 'Subarnarekha River', dist: 1500, heading: 70, tilt: 70 },
+    { name: 'Eat in Bistupur', ref: 'Mocha Cafe & Bar', dist: 1100, heading: 0, tilt: 52 },
     { name: 'Whole area', x: 0, y: -350, dist: 6200, heading: 0, tilt: 28 },
   ];
   for (const p of list) {
@@ -713,7 +742,7 @@ function applyQuality() {
   resize();
 }
 function resize() {
-  const w = innerWidth, h = innerHeight, pr = Math.min(devicePixelRatio || 1, quality === 'low' ? 1.25 : 2);
+  const w = innerWidth, h = innerHeight, pr = Math.min(devicePixelRatio || 1, quality === 'low' ? 1.75 : 2);
   renderer.setPixelRatio(pr);
   renderer.setSize(w, h, false);
   composer.setPixelRatio(pr);

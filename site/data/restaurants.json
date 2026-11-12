@@ -1,0 +1,1734 @@
+{
+ "_note": "Restaurants around Jamshedpur. Picks come from a student group chat (first pass, Place identity and closure banner re-checked live for 25 venues on 2026-11-12 (about 17:20 IST). Dish attribution audited the same day. Other venues not re-checked.); names, addresses, coordinates and ratings from Google Maps. Opening hours were not checked. Regenerate with tools/import_restaurants.py.",
+ "restaurants": [
+  {
+   "name": "Mocha Cafe & Bar",
+   "fullName": "Mocha Cafe & Bar",
+   "aliases": [
+    "mocha"
+   ],
+   "area": "Bistupur",
+   "address": "3rd Floor, Holding No-A, Imperial Bank Area, Contractors Area, Bistupur 831001",
+   "lat": 22.799155,
+   "lng": 86.1808696,
+   "rating": 4.6,
+   "reviews": 1581,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Mocha+Cafe+%26+Bar&query_place_id=ChIJVevBEKbj9TkRuHepWeuKb8I",
+   "dishes": [
+    {
+     "d": "Pahadi chicken tikka",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Lebanese platter",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Tandoor momos",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Shakes",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Burger",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Litchi and gin cocktail",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chef Dogra's Pahadi Meat (mutton)",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Shish taouk",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Wild mushroom spaghetti",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "White sauce pasta",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "DIY bruschetta",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chole kulche",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Dragon cigar (veg starter)",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Amritsari kulcha",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Aam Panna Margherita (cocktail)",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Tres leches",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Rasmalai cheesecake",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Lava cake ('lava lava')",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Sea salt caramel pastry",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Lindt hot chocolate",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Fish and chips",
+     "c": "medium",
+     "t": true,
+     "mixed": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "",
+   "skip": [
+    {
+     "d": "Spicy chicken tantanmen ramen",
+     "why": ""
+    }
+   ],
+   "notes": [],
+   "tags": [
+    "asian",
+    "bar",
+    "bistupur",
+    "burger",
+    "burgers",
+    "cafe",
+    "chinese",
+    "cocktails",
+    "coffee",
+    "dessert",
+    "desserts",
+    "drinks",
+    "eat out",
+    "indian",
+    "italian",
+    "jamshedpur",
+    "lebanese",
+    "middle eastern",
+    "non veg",
+    "non-veg",
+    "north indian",
+    "pasta",
+    "restaurant",
+    "restaurants",
+    "seafood",
+    "sweet",
+    "town"
+   ]
+  },
+  {
+   "name": "Brown Town Roastery Café",
+   "fullName": "Brown Town Roastery Café",
+   "aliases": [
+    "brown town",
+    "browntown"
+   ],
+   "area": "Bistupur",
+   "address": "K Road, in front of Brown Bunch Bakery, Bistupur 831001",
+   "lat": 22.7951873,
+   "lng": 86.1804622,
+   "rating": 4.5,
+   "reviews": 810,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Brown+Town+Roastery+Caf%C3%A9&query_place_id=ChIJnzTYWOfj9TkRQcrg698rmig",
+   "dishes": [
+    {
+     "d": "Tempura (sushi)",
+     "c": "high"
+    },
+    {
+     "d": "Nachos",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Tres leches",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Falafel hummus platter",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chola kulcha",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chicken burger",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chicken turkish kebab",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Mushroom hummus toast",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Mushroom galouti kebab",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Galouti tart (special menu)",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Honey chili potato",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Tiramisu",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Drums of Heaven (non-veg)",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Cold coffee / coffee",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Peas burger",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Thai green curry",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Ema datshi (with mushroom)",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Palak patta chaat",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Avocado toast / mushroom avo toast",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Pesto pasta / pesto bowl",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "White sauce pasta",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Shakshouka",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Veg dry manchurian",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chocolate pastry",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Affogato",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Smoked grilled chicken burger",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chicken popcorn",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 1,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "asian",
+    "bistupur",
+    "brunch",
+    "burger",
+    "burgers",
+    "cafe",
+    "chinese",
+    "coffee",
+    "dessert",
+    "desserts",
+    "eat out",
+    "healthy",
+    "indian",
+    "italian",
+    "jamshedpur",
+    "japanese",
+    "lebanese",
+    "middle eastern",
+    "non veg",
+    "non-veg",
+    "north indian",
+    "pasta",
+    "restaurant",
+    "restaurants",
+    "sushi",
+    "sweet",
+    "town"
+   ]
+  },
+  {
+   "name": "Mint Kitchen",
+   "fullName": "Mint Kitchen",
+   "aliases": [
+    "mint"
+   ],
+   "area": "Sakchi",
+   "address": "53, Thakur Bari Rd, beside Raymond, SNP Area, Ambagan, Sakchi 831001",
+   "lat": 22.8066209,
+   "lng": 86.2045364,
+   "rating": 4.5,
+   "reviews": 859,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Mint+Kitchen&query_place_id=ChIJ_87wxM_j9TkRSjFTmKGlfs8",
+   "dishes": [
+    {
+     "d": "Masala papad",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chole bhature",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Pav bhaji",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Hot and sour soup",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Momos in garlic sauce",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Manchow soup",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Veg manchurian",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Pastas",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Paper sada dosa",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Raj kachori",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chilli garlic noodles",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Thukpa",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Affogato",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "asian",
+    "cafe",
+    "chinese",
+    "coffee",
+    "dessert",
+    "desserts",
+    "eat out",
+    "indian",
+    "italian",
+    "jamshedpur",
+    "north indian",
+    "pasta",
+    "restaurant",
+    "restaurants",
+    "sakchi",
+    "south indian",
+    "sweet",
+    "town"
+   ]
+  },
+  {
+   "name": "Guild 45",
+   "fullName": "Guild 45",
+   "aliases": [
+    "guild"
+   ],
+   "area": "Bistupur",
+   "address": "4th & 5th Floor, Shaswat Building, Imperial Bank Area, Inner Cir Rd, Contractors Area, Bistupur 831001",
+   "lat": 22.799121,
+   "lng": 86.18093739999999,
+   "rating": 4.4,
+   "reviews": 747,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Guild+45&query_place_id=ChIJz_AVPQDj9TkRZ7iTB6kYvzc",
+   "dishes": [
+    {
+     "d": "Deconstructed tiramisu",
+     "c": "high"
+    },
+    {
+     "d": "Pan seared gyoza",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Lotus Biscoff cheesecake",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Lemon butter sauce prawns",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Kerala pepper fry chicken",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Honey glazed pork belly",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Kafir lime cocktail",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Shawarma (not very spicy)",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "White sauce pasta",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Lotus stem chilli",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Mushroom cream pizza",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Butter chicken pizza",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Truffle cream cheese dumplings",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Neapolitan pizza",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Manchow soup",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Khao suey",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Panna cotta",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Dosa tacos",
+     "c": "medium",
+     "t": true,
+     "mixed": true
+    }
+   ],
+   "confirmed": 1,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "asian",
+    "bar",
+    "bistupur",
+    "chinese",
+    "cocktails",
+    "dessert",
+    "desserts",
+    "drinks",
+    "eat out",
+    "indian",
+    "italian",
+    "jamshedpur",
+    "lebanese",
+    "middle eastern",
+    "non veg",
+    "non-veg",
+    "north indian",
+    "pasta",
+    "restaurant",
+    "restaurants",
+    "seafood",
+    "south indian",
+    "sweet",
+    "town"
+   ]
+  },
+  {
+   "name": "Moon",
+   "fullName": "Moon",
+   "aliases": [],
+   "area": "Bistupur",
+   "address": "Unite Mall, H2N/52, H2N/52, L Rd, Bistupur 831001",
+   "lat": 22.7939093,
+   "lng": 86.1823654,
+   "rating": 4.3,
+   "reviews": 971,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Moon&query_place_id=ChIJN7dKQQDj9TkRHs9gHwvui7s",
+   "dishes": [
+    {
+     "d": "Sushi",
+     "c": "high"
+    },
+    {
+     "d": "Avocado toast",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Arabic paneer bowl",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Global plates",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Basque / San Sebastian cheesecake",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Pesto pasta",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Butter garlic prawns",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chicken lasagna",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Skillet cookie",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 1,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "bistupur",
+    "brunch",
+    "dessert",
+    "desserts",
+    "eat out",
+    "healthy",
+    "italian",
+    "jamshedpur",
+    "japanese",
+    "non veg",
+    "non-veg",
+    "pasta",
+    "restaurant",
+    "restaurants",
+    "seafood",
+    "sushi",
+    "sweet",
+    "town"
+   ]
+  },
+  {
+   "name": "Little Italy",
+   "fullName": "Little Italy Restaurant, Jamshedpur",
+   "aliases": [
+    "little italy restaurant, jamshedpur"
+   ],
+   "area": "Bistupur",
+   "address": "Fortune Hotel, I.C. Road Centre Point, Contractors Area, Bistupur 831001",
+   "lat": 22.7988747,
+   "lng": 86.1803574,
+   "rating": 4.2,
+   "reviews": 1003,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Little+Italy+Restaurant%2C+Jamshedpur&query_place_id=ChIJS6OMOq3j9TkRUWYxrl7RJ9U",
+   "dishes": [
+    {
+     "d": "White sauce pasta",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Nachos",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Masala garlic bread with cheese",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Blueberry cheesecake",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Tabasco pizza",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Sicilia pizza",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Lasagna",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Ricotta dips",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Caramel pudding / custard",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "bistupur",
+    "dessert",
+    "desserts",
+    "eat out",
+    "italian",
+    "jamshedpur",
+    "pasta",
+    "restaurant",
+    "restaurants",
+    "sweet",
+    "town"
+   ]
+  },
+  {
+   "name": "Banjara",
+   "fullName": "Banjara",
+   "aliases": [],
+   "area": "Sonari",
+   "address": "Bindal Mall, Marine Dr Rd, Ashiana Gardens, Sonari 831011",
+   "lat": 22.8284184,
+   "lng": 86.17768799999999,
+   "rating": 4.5,
+   "reviews": 5213,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Banjara&query_place_id=ChIJaZwLPSvj9TkR8loAkxw2wQY",
+   "dishes": [
+    {
+     "d": "Cream of broccoli soup",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Naan with paneer rollad and/or dal makhani",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Steamed veg momos",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Curd rice",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "asian",
+    "chinese",
+    "eat out",
+    "indian",
+    "jamshedpur",
+    "north indian",
+    "restaurant",
+    "restaurants",
+    "sonari",
+    "town"
+   ]
+  },
+  {
+   "name": "Lion's Pride",
+   "fullName": "LION'S PRIDE RESTRO",
+   "aliases": [
+    "lion pride",
+    "lion's pride restro",
+    "lions pride"
+   ],
+   "area": "Bistupur",
+   "address": "Krishna Kunj, Inner Cir Rd, near Kabiria School, Contractors Area, Bistupur 831001",
+   "lat": 22.7988879,
+   "lng": 86.1784996,
+   "rating": 4.3,
+   "reviews": 352,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=LION%27S+PRIDE+RESTRO&query_place_id=ChIJOyEp30bj9TkR3cuLcOQY52M",
+   "dishes": [
+    {
+     "d": "Crispy Cronjee lamb",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chicken hara bhara tikka",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Tandoori chicken",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Tandoori prawns",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Butter garlic prawns",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Devil's prawns",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Honey lemon chicken",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "bistupur",
+    "eat out",
+    "indian",
+    "jamshedpur",
+    "non veg",
+    "non-veg",
+    "north indian",
+    "restaurant",
+    "restaurants",
+    "seafood",
+    "town"
+   ]
+  },
+  {
+   "name": "Pumpkkin",
+   "fullName": "Pumpkkin A Vegetarian Restaurant",
+   "aliases": [
+    "pumpkin",
+    "pumpkkin a vegetarian restaurant"
+   ],
+   "area": "Sakchi",
+   "address": "148A, Dhalbhum Road, SNP Area, Ambagan, Sakchi 831001",
+   "lat": 22.8104915,
+   "lng": 86.2026602,
+   "rating": 4.7,
+   "reviews": 448,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Pumpkkin+A+Vegetarian+Restaurant&query_place_id=ChIJhRkdTADj9TkREmQGI_tm-Q4",
+   "dishes": [
+    {
+     "d": "Tiramisu",
+     "c": "high"
+    }
+   ],
+   "confirmed": 1,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "dessert",
+    "desserts",
+    "eat out",
+    "jamshedpur",
+    "pure veg",
+    "restaurant",
+    "restaurants",
+    "sakchi",
+    "sweet",
+    "town"
+   ]
+  },
+  {
+   "name": "Mashq",
+   "fullName": "MASHQvankanpaleam",
+   "aliases": [
+    "mashqvankanpaleam"
+   ],
+   "area": "Bistupur",
+   "address": "Shop no 1, no 9, Line, N Rd, Bistupur Market, Bistupur 831001",
+   "lat": 22.7926048,
+   "lng": 86.185356,
+   "rating": 4.7,
+   "reviews": 209,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=MASHQvankanpaleam&query_place_id=ChIJc9aSNM3j9TkRH8dluBAXwXQ",
+   "dishes": [
+    {
+     "d": "Fried fish",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Khameeri roti",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Prawns",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Shahi tukda",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Phirni",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Mango lassi",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Dal makhani rice",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Nihari",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Khunafah",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Tiramisu cold coffee",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "Temporarily closed, per Google Maps",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "bistupur",
+    "cafe",
+    "coffee",
+    "dessert",
+    "desserts",
+    "eat out",
+    "indian",
+    "jamshedpur",
+    "non veg",
+    "non-veg",
+    "north indian",
+    "restaurant",
+    "restaurants",
+    "seafood",
+    "sweet",
+    "town"
+   ]
+  },
+  {
+   "name": "Aurous Restro Lounge",
+   "fullName": "Aurous Restro Lounge",
+   "aliases": [
+    "aurous"
+   ],
+   "area": "Bistupur",
+   "address": "1st floor, shangrilla tower, Bistupur Main Rd, beside bharat cycle store, South Park, Bistupur 831001",
+   "lat": 22.7911584,
+   "lng": 86.1839919,
+   "rating": 4.3,
+   "reviews": 1222,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Aurous+Restro+Lounge&query_place_id=ChIJa52EvVDj9TkRKwpY5b9ZPVc",
+   "dishes": [
+    {
+     "d": "Chicken Caesar salad",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Non-veg platter",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Lemon coriander soup",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chicken tikka",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Fish fillet in lemon butter sauce",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Pan fried noodles",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Crispy lotus stem",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "asian",
+    "bar",
+    "bistupur",
+    "brunch",
+    "chinese",
+    "drinks",
+    "eat out",
+    "healthy",
+    "indian",
+    "jamshedpur",
+    "non veg",
+    "non-veg",
+    "north indian",
+    "restaurant",
+    "restaurants",
+    "seafood",
+    "town"
+   ]
+  },
+  {
+   "name": "Novelty Restaurant",
+   "fullName": "Novelty Restaurant",
+   "aliases": [
+    "novelty"
+   ],
+   "area": "Bistupur",
+   "address": "Regal Cinema Building, Bharucha Mansion, Kharkai Link Rd, near Gopal Maidan, Bistupur 831001",
+   "lat": 22.79839,
+   "lng": 86.1838083,
+   "rating": 4.1,
+   "reviews": 6778,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Novelty+Restaurant&query_place_id=ChIJjfdmDmXj9TkR3auhGaLbOcY",
+   "dishes": [
+    {
+     "d": "Pan fried momos",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Tomato soup",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Mutton rogan josh",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Paneer butter masala",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Garlic naan",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Butter chicken",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Mutton biryani",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Tandoori momos",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "asian",
+    "bistupur",
+    "chinese",
+    "eat out",
+    "indian",
+    "jamshedpur",
+    "non veg",
+    "non-veg",
+    "north indian",
+    "restaurant",
+    "restaurants",
+    "town"
+   ]
+  },
+  {
+   "name": "Chai Break",
+   "fullName": "Chai Break Cafe & Bar - Jamshedpur",
+   "aliases": [
+    "chai break cafe & bar - jamshedpur"
+   ],
+   "area": "Bistupur",
+   "address": "Regal Square, 3rd floor, Bistupur Main Rd, opp. regal ground, Bistupur 831001",
+   "lat": 22.7984041,
+   "lng": 86.18383659999999,
+   "rating": 4.4,
+   "reviews": 1105,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Chai+Break+Cafe+%26+Bar+-+Jamshedpur&query_place_id=ChIJ51Ld5nPj9TkRaiYt_bAHI2k",
+   "dishes": [
+    {
+     "d": "Stuffed naan",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Dal makhani",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Mushroom ravioli",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Paneer tikka lababdar with masala kulcha",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Butter chicken rice bowl",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "bar",
+    "bistupur",
+    "brunch",
+    "drinks",
+    "eat out",
+    "healthy",
+    "indian",
+    "italian",
+    "jamshedpur",
+    "non veg",
+    "non-veg",
+    "north indian",
+    "pasta",
+    "restaurant",
+    "restaurants",
+    "town"
+   ]
+  },
+  {
+   "name": "Moti Mahal",
+   "fullName": "Moti Mahal, Bistupur",
+   "aliases": [
+    "moti mahal, bistupur"
+   ],
+   "area": "Bistupur",
+   "address": "Crystal Square, Kharkai Link Rd, Ram Das Bhatta, Bistupur 831001",
+   "lat": 22.7943722,
+   "lng": 86.17792829999999,
+   "rating": 3.9,
+   "reviews": 3945,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Moti+Mahal%2C+Bistupur&query_place_id=ChIJ_StOeWHj9TkRaFFzI_h1upc",
+   "dishes": [
+    {
+     "d": "Stuffed tangri kebab",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Tomato soup",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chicken tikka biryani",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "bistupur",
+    "eat out",
+    "indian",
+    "jamshedpur",
+    "non veg",
+    "non-veg",
+    "north indian",
+    "restaurant",
+    "restaurants",
+    "town"
+   ]
+  },
+  {
+   "name": "Aaoka Café",
+   "fullName": "Aaoka Café",
+   "aliases": [
+    "aaoka"
+   ],
+   "area": "Bistupur",
+   "address": "Kashi Kunj, Road No. 2, opposite Geetanjali Salon, Contractors Area, Bistupur 831001",
+   "lat": 22.7972921,
+   "lng": 86.1796751,
+   "rating": 4.3,
+   "reviews": 107,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Aaoka+Caf%C3%A9&query_place_id=ChIJvbhxbJXj9TkRj_RmXG5MLvw",
+   "dishes": [
+    {
+     "d": "Burger (filling)",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Korean bun with fries",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Mushroom pate toast",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Zebra pastry",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Loaded nachos",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Tiramisu",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Sundried tomato pesto pasta",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "bistupur",
+    "brunch",
+    "burger",
+    "burgers",
+    "dessert",
+    "desserts",
+    "eat out",
+    "healthy",
+    "italian",
+    "jamshedpur",
+    "pasta",
+    "restaurant",
+    "restaurants",
+    "sweet",
+    "town"
+   ]
+  },
+  {
+   "name": "Hana",
+   "fullName": "Hana (Asian Eating House)",
+   "aliases": [
+    "hana (asian eating house)"
+   ],
+   "area": "Sonari",
+   "address": "Rd Number 10, Circuit House Area, Sonari 831001",
+   "lat": 22.8117621,
+   "lng": 86.18847199999999,
+   "rating": 4.2,
+   "reviews": 185,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Hana+%28Asian+Eating+House%29&query_place_id=ChIJswNBFZbj9TkRYhmHzQWpHF4",
+   "dishes": [
+    {
+     "d": "Chicken / pork tantanmen ramen",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Momos",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chicken BBQ",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Ramen",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Pork datshi",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Chicken in white wine sauce",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "asian",
+    "chinese",
+    "eat out",
+    "jamshedpur",
+    "non veg",
+    "non-veg",
+    "restaurant",
+    "restaurants",
+    "sonari",
+    "town"
+   ]
+  },
+  {
+   "name": "Equinox",
+   "fullName": "Equinox",
+   "aliases": [],
+   "area": "Bistupur",
+   "address": "The Sonnet, Inner Cir Rd, Contractors Area, Bistupur 831001",
+   "lat": 22.7988802,
+   "lng": 86.1793713,
+   "rating": 4.3,
+   "reviews": 1802,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Equinox&query_place_id=ChIJD4FRGGPj9TkROJyq8XbPu74",
+   "dishes": [
+    {
+     "d": "Mutton kosha",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Kimchi ramen / chicken kimchi ramen",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "bistupur",
+    "eat out",
+    "jamshedpur",
+    "non veg",
+    "non-veg",
+    "restaurant",
+    "restaurants",
+    "town"
+   ]
+  },
+  {
+   "name": "The Alcor Hotel",
+   "fullName": "The Alcor Hotel",
+   "aliases": [
+    "alcor"
+   ],
+   "area": "Bistupur",
+   "address": "Holding No.4, Ram Das Bhatta Cir, New Rani Kudar, Bistupur 831001",
+   "lat": 22.7936954,
+   "lng": 86.1761856,
+   "rating": 4.3,
+   "reviews": 5657,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=The+Alcor+Hotel&query_place_id=ChIJaYez8mHj9TkR31m-7KB3FY4",
+   "dishes": [
+    {
+     "d": "Mutton biryani (Zirca)",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Breakfast buffet",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Eclair",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "Open status unknown",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "bistupur",
+    "eat out",
+    "indian",
+    "jamshedpur",
+    "non veg",
+    "non-veg",
+    "north indian",
+    "restaurant",
+    "restaurants",
+    "town"
+   ]
+  },
+  {
+   "name": "Aami Bangali",
+   "fullName": "Aami Bangali Restaurant Jamshedpur",
+   "aliases": [
+    "aami bangali restaurant jamshedpur"
+   ],
+   "area": "Sonari",
+   "address": "B Rd, West Layout, Sonari 831011",
+   "lat": 22.8214023,
+   "lng": 86.1663632,
+   "rating": 3.6,
+   "reviews": 549,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Aami+Bangali+Restaurant+Jamshedpur&query_place_id=ChIJ6et2MJvl9TkRgxErEtJySKc",
+   "dishes": [
+    {
+     "d": "Fish fingers",
+     "c": "high"
+    },
+    {
+     "d": "Fish kabiraji",
+     "c": "high"
+    },
+    {
+     "d": "Ilish sorshe",
+     "c": "high"
+    }
+   ],
+   "confirmed": 3,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "eat out",
+    "jamshedpur",
+    "non veg",
+    "non-veg",
+    "restaurant",
+    "restaurants",
+    "seafood",
+    "sonari",
+    "town"
+   ]
+  },
+  {
+   "name": "AllThatBakes",
+   "fullName": "AllThatBakes",
+   "aliases": [
+    "all that bakes"
+   ],
+   "area": "Bistupur",
+   "address": "2, Inner Cir Rd, beside Lemon tree, Contractors Area, Bistupur 831001",
+   "lat": 22.7990041,
+   "lng": 86.1806738,
+   "rating": 4.3,
+   "reviews": 320,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=AllThatBakes&query_place_id=ChIJWxEr92Dj9TkRKFY_RyihtRg",
+   "dishes": [
+    {
+     "d": "Blueberry / winterberry cheesecake",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Sandwiches",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Tiramisu",
+     "c": "medium",
+     "t": true
+    },
+    {
+     "d": "Hot chocolate",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 0,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "bistupur",
+    "cafe",
+    "coffee",
+    "dessert",
+    "desserts",
+    "eat out",
+    "jamshedpur",
+    "restaurant",
+    "restaurants",
+    "sweet",
+    "town"
+   ]
+  },
+  {
+   "name": "Uncle Peter's Pancakes",
+   "fullName": "Uncle Peter's Pancakes",
+   "aliases": [],
+   "area": "Bistupur",
+   "address": "Ground Floor, Swastik Aakash, Rd Number 3, beside Timeout, Contractors Area, Bistupur 831001",
+   "lat": 22.7986079,
+   "lng": 86.1777965,
+   "rating": 4.5,
+   "reviews": 376,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Uncle+Peter%27s+Pancakes&query_place_id=ChIJBy9c2yjj9TkRXo2xxIHXer8",
+   "dishes": [
+    {
+     "d": "Pancakes",
+     "c": "high"
+    }
+   ],
+   "confirmed": 1,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "bistupur",
+    "eat out",
+    "jamshedpur",
+    "restaurant",
+    "restaurants",
+    "town"
+   ]
+  },
+  {
+   "name": "Sukh Sagar",
+   "fullName": "The Sukh Sagar Veg Restaurant",
+   "aliases": [
+    "the sukh sagar veg restaurant"
+   ],
+   "area": "Sakchi",
+   "address": "5th Floor, Super Centre, New Kalimati Rd, Sakchi 831007",
+   "lat": 22.8016347,
+   "lng": 86.2046555,
+   "rating": 4.1,
+   "reviews": 2878,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=The+Sukh+Sagar+Veg+Restaurant&query_place_id=ChIJ97qwug_j9TkRWHLKcZ5xHVc",
+   "dishes": [
+    {
+     "d": "Thali (Sakchi)",
+     "c": "high"
+    }
+   ],
+   "confirmed": 1,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "eat out",
+    "jamshedpur",
+    "restaurant",
+    "restaurants",
+    "sakchi",
+    "town"
+   ]
+  },
+  {
+   "name": "Shreshtham",
+   "fullName": "Shreshtham",
+   "aliases": [],
+   "area": "Sakchi",
+   "address": "Sabji Mandi, 83, Tank Rd, near Sitla Mandir, SNP Area, Sakchi 831001",
+   "lat": 22.8061847,
+   "lng": 86.20535459999999,
+   "rating": 4.3,
+   "reviews": 189,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Shreshtham&query_place_id=ChIJkQdNKeTj9TkRIf0-fZXe_Q4",
+   "dishes": [
+    {
+     "d": "Pani puri",
+     "c": "high"
+    },
+    {
+     "d": "Samosa",
+     "c": "high"
+    },
+    {
+     "d": "Indian sweets",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 2,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "eat out",
+    "jamshedpur",
+    "restaurant",
+    "restaurants",
+    "sakchi",
+    "town"
+   ]
+  },
+  {
+   "name": "Bhola Maharaj",
+   "fullName": "Bhola Maharaj",
+   "aliases": [],
+   "area": "Sakchi",
+   "address": "R633+RQH bhola maharaj building, bhola maharaj lane, SNP Area, Sakchi 831001",
+   "lat": 22.8044648,
+   "lng": 86.2044884,
+   "rating": 4.1,
+   "reviews": 1284,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Bhola+Maharaj&query_place_id=ChIJf-vIiOPj9TkRX16pgHfn8Fc",
+   "dishes": [
+    {
+     "d": "Samosa",
+     "c": "high"
+    },
+    {
+     "d": "Sweets",
+     "c": "medium",
+     "t": true
+    }
+   ],
+   "confirmed": 1,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "eat out",
+    "jamshedpur",
+    "restaurant",
+    "restaurants",
+    "sakchi",
+    "town"
+   ]
+  },
+  {
+   "name": "Dabba & Co",
+   "fullName": "Dabba & Co",
+   "aliases": [],
+   "area": "Bistupur",
+   "address": "H No.- 27, Road No.- 02 Gurudwara Basti, Old, New Rani Kudar, Bistupur 831001",
+   "lat": 22.7905529,
+   "lng": 86.1771419,
+   "rating": 2,
+   "reviews": 25,
+   "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Dabba+%26+Co&query_place_id=ChIJ-9DniqLj9TkROPrcIRENlSE",
+   "dishes": [
+    {
+     "d": "Khichdi",
+     "c": "high"
+    }
+   ],
+   "confirmed": 1,
+   "closed": "",
+   "skip": [],
+   "notes": [],
+   "tags": [
+    "bistupur",
+    "eat out",
+    "jamshedpur",
+    "restaurant",
+    "restaurants",
+    "town"
+   ]
+  }
+ ]
+}

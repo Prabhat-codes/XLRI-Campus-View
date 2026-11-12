@@ -43,6 +43,7 @@ T=[ # crop, label or None, height m, outline px
 ('H','TATA Auditorium',14,[(505,800),(690,790),(715,1060),(530,1075)]),
 ('H',None,9,[(500,1050),(755,1020),(770,1080),(745,1130),(545,1155),(505,1100)]),
 ('H',None,6,[(700,810),(740,800),(770,1010),(712,1015)]),
+('H',None,5,[(565,738),(712,728),(716,764),(568,774)]),
 ]
 # campus names from people who live there; Google Maps confirms Bishu Da's position
 LABELS=[ # (crop, x, y) or ('ll', lat, lon); name; label height m; description
@@ -53,9 +54,9 @@ LABELS=[ # (crop, x, y) or ('ll', lat, lon); name; label height m; description
  ('A',330,520,'NH Boys Hostel',19,'New Hostel, boys’ side.'),
  ('A',350,1000,'NH Girls Hostel',19,'New Hostel, girls’ side, next to LC2.'),
  ('H',885,330,'MDP Hostel',7,'Rooms for people visiting from outside for management development programmes.'),
- ('H',360,870,'Bishu Da',7,'One of the oldest stalls on campus. Home of the legendary Pindi paratha, veg and non-veg.'),
- ('H',450,860,'Jampot',13,'Student-run café: momos, pasta and good coffee.'),
- ('H',420,400,"Aiyer's Café",7,'South Indian food.'),
+ ('H',360,870,'Bishu Da',5,'One of the oldest stalls on campus. Home of the legendary Pindi paratha, veg and non-veg.'),
+ ('H',360,870,'Jampot',8.5,'Student-run café: momos, pasta and good coffee.'),
+ ('H',640,751,"Aiyer's Café",5,'South Indian food.'),
  ('ll',22.81732,86.19138,'Jaima',5,''),
  ('E',550,815,"Teachers' Residence",12,'Faculty housing, across from Diamond Jubilee Park.'),
  ('G',975,200,'JLT',0,'The lawn inside the L of Fr. Enright Hostel, where the parties happen.'),

@@ -1125,6 +1125,28 @@
      22.813225
     ]
    ]
+  },
+  {
+   "name": null,
+   "height": 5,
+   "ring": [
+    [
+     86.191171,
+     22.813573
+    ],
+    [
+     86.191371,
+     22.813586
+    ],
+    [
+     86.191377,
+     22.813541
+    ],
+    [
+     86.191175,
+     22.813528
+    ]
+   ]
   }
  ],
  "labels": [
@@ -1197,25 +1219,25 @@
     86.19089,
     22.813407
    ],
-   "h": 7,
+   "h": 5,
    "desc": "One of the oldest stalls on campus. Home of the legendary Pindi paratha, veg and non-veg."
   },
   {
    "name": "Jampot",
    "lonlat": [
-    86.191013,
-    22.81342
+    86.19089,
+    22.813407
    ],
-   "h": 13,
+   "h": 8.5,
    "desc": "Student-run caf\u00e9: momos, pasta and good coffee."
   },
   {
    "name": "Aiyer's Caf\u00e9",
    "lonlat": [
-    86.190972,
-    22.813999
+    86.191273,
+    22.813557
    ],
-   "h": 7,
+   "h": 5,
    "desc": "South Indian food."
   },
   {
