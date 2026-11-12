@@ -25,7 +25,7 @@ function step(msg) {
   if (msg) $('loader-msg').textContent = msg;
 }
 // bump DATA_VERSION whenever site/data changes, so browsers never mix new code with old cached data
-const DATA_VERSION = '3';
+const DATA_VERSION = '4';
 const D = (f) => `data/${f}?v=${DATA_VERSION}`;
 const texLoader = new THREE.TextureLoader();
 const loadTex = (url) => new Promise((res, rej) => texLoader.load(url, res, undefined, rej));

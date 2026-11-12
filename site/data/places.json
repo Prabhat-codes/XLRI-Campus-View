@@ -1,6 +1,6 @@
 {
   "_note": "Campus directory: descriptions, search tags, opening hours (IST, 24h; an end earlier than the start runs past midnight) and phone numbers. 'name' must match a label on the map. hours: null means not known; 'note' is shown instead. 'usually' marks hours a place is typically open when exact timings vary. Edit freely, no rebake needed. feedbackUrl: the Google Apps Script web-app URL that appends feedback to the sheet (see tools/feedback_sheet.gs).",
-  "feedbackUrl": "",
+  "feedbackUrl": "https://script.google.com/macros/s/AKfycbxSIj0yUrDQZvdopgR7Rvn5nXWgJSOD8HEVnl_uOzHWKeYijOQ5QcPX9iWsVTxmMkgj/exec",
   "places": [
     {
       "name": "Aiyer's Café",
