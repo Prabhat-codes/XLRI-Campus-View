@@ -30,6 +30,8 @@ Then open http://localhost:5173.
 | Neighbourhood labels | Hand-placed in `tools/bake.py` | Approximate. |
 | Campus directory | `site/data/places.json`, from students | Descriptions, search tags, opening hours (IST) and phone numbers behind the hover cards, the search box and the "Ask XLRI" assistant. Edit it directly; no rebake needed. Each `name` must match a map label. |
 
+When you change anything in `site/data/`, bump `DATA_VERSION` near the top of `site/main.js` so returning visitors get the new files.
+
 The assistant runs entirely in the browser (`site/places.js`): it matches questions against names, aliases and tags, and works out what is open from the current time in IST. It has no server and no API key.
 
 ## Rebuild the data

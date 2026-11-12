@@ -24,6 +24,9 @@ function step(msg) {
   $('loader-fill').style.width = Math.round((loadState.done / loadState.total) * 100) + '%';
   if (msg) $('loader-msg').textContent = msg;
 }
+// bump DATA_VERSION whenever site/data changes, so browsers never mix new code with old cached data
+const DATA_VERSION = '3';
+const D = (f) => `data/${f}?v=${DATA_VERSION}`;
 const texLoader = new THREE.TextureLoader();
 const loadTex = (url) => new Promise((res, rej) => texLoader.load(url, res, undefined, rej));
 
@@ -97,12 +100,12 @@ let trees = null, treeCount = 0;
 
 async function boot() {
   const [m, bBuf, tBuf, ground, campusTex, placesData] = await Promise.all([
-    fetch('data/meta.json').then((r) => r.json()).then((v) => (step('Laying out streets'), v)),
-    fetch('data/buildings.bin').then((r) => r.arrayBuffer()).then((v) => (step('Reading building footprints'), v)),
-    fetch('data/trees.bin').then((r) => r.arrayBuffer()).then((v) => (step('Counting trees'), v)),
-    loadTex('data/ground.jpg').then((v) => (step('Unrolling the satellite image'), v)),
-    loadTex('data/campus.jpg').then((v) => (step('Sharpening the campus'), v)),
-    fetch('data/places.json').then((r) => (r.ok ? r.json() : { places: [] })).catch(() => ({ places: [] })),
+    fetch(D('meta.json')).then((r) => r.json()).then((v) => (step('Laying out streets'), v)),
+    fetch(D('buildings.bin')).then((r) => r.arrayBuffer()).then((v) => (step('Reading building footprints'), v)),
+    fetch(D('trees.bin')).then((r) => r.arrayBuffer()).then((v) => (step('Counting trees'), v)),
+    loadTex(D('ground.jpg')).then((v) => (step('Unrolling the satellite image'), v)),
+    loadTex(D('campus.jpg')).then((v) => (step('Sharpening the campus'), v)),
+    fetch(D('places.json')).then((r) => (r.ok ? r.json() : { places: [] })).catch(() => ({ places: [] })),
   ]);
   meta = m;
   PL = setupPlaces(placesData, { goTo });
