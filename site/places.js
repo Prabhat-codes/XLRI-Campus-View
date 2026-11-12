@@ -396,9 +396,7 @@ export function setupPlaces(data, { goTo }, food = {}, people = {}) {
 
   // --- assistant
   const chat = $('chat'), log = $('chat-log'), form = $('chat-form'), input = $('chat-input'), chips = $('chat-chips');
-  const PRESETS = ["What's open right now?", 'Ambulance number', 'Wifi not working', 'LC2 contacts', 'Where to eat in Jamshedpur?', "What's good at Mocha?", 'Best pasta in town', 'Where can I get printouts?',
-    'Best South Indian?', 'Late night food', 'Best momos', 'Dessert in town', 'Bar for beer', "Jampot's number", 'Is the library open?',
-    'Where do I get juice?', 'Where is the gym?', 'Stationery shop', 'Where are the parties?', 'All phone numbers'];
+  const PRESETS = ["What's open right now?", 'Wifi not working', 'Where to eat in Jamshedpur?', 'Where can I get printouts?'];
   function say(who, content) {
     const m = el('div', 'msg ' + who);
     if (typeof content === 'string') m.textContent = content; else m.append(content);
