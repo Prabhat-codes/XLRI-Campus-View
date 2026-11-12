@@ -19,8 +19,26 @@ export function fmtTime(m) {
 const inRange = (now, [a, b]) => { const s = toMin(a), e = toMin(b); return s < e ? now >= s && now < e : now >= s || now < e; };
 
 // state: open | likely | closed | unknown
+// Live Open/Closed taps from the stores (via the sheet). A tap counts until the store's usual
+// closing time (for "open") or opening time (for "closed"), and never longer than 12 hours.
+export const LIVE = {};
+const istMin = (ms) => { const [h, m] = istFmt.format(new Date(ms)).split(':').map(Number); return h * 60 + m; };
+function liveStatus(p) {
+  const t = LIVE[p.name];
+  if (!t || !t.at) return null;
+  const age = (Date.now() - t.at) / 60000;
+  if (age < 0 || age > 720) return null;
+  const tap = istMin(t.at), ranges = p.hours || p.usually;
+  let limit = 720;
+  if (ranges) for (const [a, b] of ranges) { const edge = toMin(t.open ? b : a); limit = Math.min(limit, (edge - tap + 1440) % 1440 || 1440); }
+  if (age > limit) return null;
+  return t.open ? { state: 'open', text: `Open now · marked open by the store at ${fmtTime(tap)}`, live: true }
+    : { state: 'closed', text: `Closed now · marked closed by the store at ${fmtTime(tap)}`, live: true };
+}
 export function status(p, now = nowIST()) {
   if (!p) return { state: 'unknown', text: '' };
+  const live = liveStatus(p);
+  if (live) return live;
   if (p.hours) {
     for (const r of p.hours) if (inRange(now, r)) return { state: 'open', text: `Open now · closes ${fmtTime(toMin(r[1]))}` };
     let next = null;
@@ -46,6 +64,11 @@ const stem = (t) => (t.length > 3 && t.endsWith('s') ? t.slice(0, -1) : t);
 
 let PLACES = [];
 let CONTACTS = [];
+let CAMPUS = false;   // true once the campus code has unlocked names and numbers
+const LOCKED = 'Phone numbers are only in the campus version. On campus? Tap "Unlock phone numbers" below.';
+function setContacts(list) {
+  CONTACTS = list.map((c) => ({ ...c, name: c.name || c.role, phones: c.phones || [], _tags: c.tags.map((t) => stem(norm(t))), _words: norm((c.name || '') + ' ' + c.role).split(' ').map(stem) }));
+}
 // questions about a service rather than a place: these always look in the contacts list
 const SERVICE_RE = /\b(help|helpdesk|helpline|emergency|ambulance|doctor|medical|electric\w*|maintenance|repair|plumb\w*|security|guard|housekeeping|cleaning|kfms|ac|aircon|wifi|internet|network|projector|audio|av|mic|tent|shamiana|printing|flex|banner\w*|posters?|stores?|adsa|reception|head|staff|contacts?|in charge|incharge)\b/;
 function searchContacts(qn) {
@@ -158,18 +181,18 @@ export function answer(q, now = nowIST()) {
       const people = CONTACTS.filter((c) => c.place === p.name && !(c.phones.length === 1 && c.phones[0] === p.phone));   // skip a repeat of the place's own number
       if (wantsPeople && (people.length || wantsPhone)) {
         if (people.length) return [...(p.phone ? [{ place: p, line: '', phone: p.phone, phoneLabel: p.phoneLabel }] : [{ place: p, line: '' }]), ...people.map(contactItem)];
-        return { place: p, line: p.phone ? '' : `I don't have a number for ${p.name} yet.`, phone: p.phone, phoneLabel: p.phoneLabel };
+        return { place: p, line: p.phone ? '' : p.hasPhone && !CAMPUS ? LOCKED : `I don't have a number for ${p.name} yet.`, phone: p.phone, phoneLabel: p.phoneLabel };
       }
       const line = [st.text || (wantsTime ? NOT_SURE : ''), p.hours ? `(${hoursText(p)})` : ''].filter(Boolean).join(' ');
       return { place: p, line: wantsTime ? line : [p.desc, line].filter(Boolean).join(' '), phone: wantsTime ? null : p.phone, phoneLabel: p.phoneLabel };
     });
-    return { intro: wantsTime ? clock : '', items: items.flat(), outro: '' };
+    return { intro: wantsTime ? clock : '', items: items.flat(), outro: !CAMPUS && wantsPeople ? LOCKED : '' };
   }
 
   // 1b. a service or department: ambulance, electrician, IT helpdesk, security...
   if (wantsPhone || SERVICE_RE.test(qn)) {
     const people = searchContacts(qn).slice(0, 6);
-    if (people.length) return { intro: 'Here\u2019s who to call:', items: people.map(contactItem), outro: '' };
+    if (people.length) return { intro: 'Here\u2019s who to call:', items: people.map(contactItem), outro: CAMPUS ? '' : LOCKED };
   }
 
   // 2. "phone numbers" with no place
@@ -180,7 +203,7 @@ export function answer(q, now = nowIST()) {
 
   // 3. "what's open right now?"
   if (wantsTime && !topic.length) {
-    const ranked = byOpen(PLACES.filter((p) => p.hours || p.usually), now);
+    const ranked = byOpen(PLACES.filter((p) => p.hours || p.usually || LIVE[p.name]), now);
     const open = ranked.filter((r) => r.st.state === 'open' || r.st.state === 'likely');
     const closed = ranked.filter((r) => r.st.state === 'closed');
     return {
@@ -245,7 +268,7 @@ function statusPill(st) { return st.text ? el('span', 'pill ' + st.state, st.tex
 
 // ---------------------------------------------------------------- setup
 export function setupPlaces(data, { goTo }, food = {}, people = {}) {
-  CONTACTS = (people.contacts || []).map((c) => ({ ...c, _tags: c.tags.map((t) => stem(norm(t))), _words: norm(c.name + ' ' + c.role).split(' ').map(stem) }));
+  setContacts(people.contacts || []);
   const restaurants = food.restaurants || [];
   PLACES = (data.places || []).map((p) => ({ ...p, _aliases: (p.aliases || []).map(norm), _tags: (p.tags || []).map(norm), _desc: norm(p.desc || '') }))
     .concat(restaurants.map((r) => ({
@@ -294,13 +317,14 @@ export function setupPlaces(data, { goTo }, food = {}, people = {}) {
     if (d) card.append(el('p', null, d));
     if (p && p.hours) card.append(el('p', 'hours', 'Hours: ' + hoursText(p) + (p.note ? ` · ${p.note}` : '')));
     if (p && p.phone) card.append(phoneLink(p.phone, p.phoneLabel));
+    if (!CAMPUS && ((p && p.hasPhone) || CONTACTS.some((c) => c.place === l.n))) card.append(el('p', 'hours', 'Phone numbers are in the campus version (Ask Me Anything, then Unlock phone numbers).'));
     const people = CONTACTS.filter((c) => c.place === l.n);
     if (people.length) {
       card.append(el('div', 'sub', 'Contacts'));
       const ul = el('ul', 'contacts');
       for (const c of people) {
         const li = el('li');
-        li.append(el('b', null, c.name), el('span', null, ' \u00b7 ' + c.role));
+        li.append(el('b', null, c.name), el('span', null, c.name === c.role ? '' : ' \u00b7 ' + c.role));
         for (const ph of c.phones) li.append(' ', phoneLink(ph, ''));
         ul.append(li);
       }
@@ -421,8 +445,9 @@ export function setupPlaces(data, { goTo }, food = {}, people = {}) {
         if (it.heading) { ul.append(el('li', 'heading', it.heading)); continue; }
         if (it.contact) {
           const c = it.contact, li = el('li');
-          li.append(el('b', null, c.name), el('span', null, ' \u00b7 ' + c.role + (c.place ? ` (${c.place})` : '')));
+          li.append(el('b', null, c.name), el('span', null, (c.name === c.role ? '' : ' \u00b7 ' + c.role) + (c.place ? ` (${c.place})` : '')));
           for (const ph of c.phones) li.append(' ', phoneLink(ph, ''));
+          if (!c.phones.length) li.append(el('span', 'outro', ' (number in the campus version)'));
           if (c.email) { const m = el('a', 'maplink', c.email); m.href = 'mailto:' + c.email; li.append(' ', m); }
           ul.append(li);
           continue;
@@ -451,6 +476,44 @@ export function setupPlaces(data, { goTo }, food = {}, people = {}) {
     input.focus();
   }
   $('chat-btn').addEventListener('click', openChat);
+
+  // --- campus version: the code unlocks names and numbers, served by the sheet script
+  const API = data.feedbackUrl;
+  function applyCampus(d) {
+    CAMPUS = true;
+    for (const p of PLACES) { const ph = d.placePhones && d.placePhones[p.name]; if (ph) { p.phone = ph.phone; p.phoneLabel = ph.phoneLabel; } }
+    setContacts(d.contacts || []);
+    $('unlock-open').textContent = 'Campus version: numbers unlocked';
+  }
+  async function unlock(code, quiet) {
+    try {
+      const r = await fetch(`${API}?action=campus&code=${encodeURIComponent(code)}`).then((x) => x.json());
+      if (!r.ok) throw new Error('code');
+      applyCampus(r.data);
+      try { localStorage.setItem('xlri-campus-code', code); } catch {}
+      return true;
+    } catch (err) {
+      if (quiet && err.message === 'code') try { localStorage.removeItem('xlri-campus-code'); } catch {}
+      return false;
+    }
+  }
+  try { const saved = localStorage.getItem('xlri-campus-code'); if (saved && API) unlock(saved, true); } catch {}
+  $('unlock-open').addEventListener('click', () => { if (!CAMPUS) { $('unlock').hidden = !$('unlock').hidden; if (!$('unlock').hidden) $('unlock-code').focus(); } });
+  $('unlock').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msg = $('unlock-msg');
+    msg.textContent = 'Checking...';
+    if (await unlock($('unlock-code').value.trim())) { $('unlock').hidden = true; say('bot', 'Unlocked! Phone numbers now show on cards and in my answers.'); }
+    else msg.textContent = "That code didn't work. Ask a friend on campus for it.";
+  });
+
+  // --- live Open/Closed taps from the stores, refreshed every 3 minutes
+  async function refreshLive() {
+    if (!API) return;
+    try { const r = await fetch(`${API}?action=status`).then((x) => x.json()); if (r.ok) { for (const k of Object.keys(LIVE)) delete LIVE[k]; Object.assign(LIVE, r.status); } } catch {}
+  }
+  refreshLive();
+  setInterval(refreshLive, 180000);
 
   // --- feedback: appended to the Google Sheet by an Apps Script web app (tools/feedback_sheet.gs)
   const fb = $('fb'), fbStatus = $('fb-status'), fbSend = $('fb-send'), main = $('chat-main');

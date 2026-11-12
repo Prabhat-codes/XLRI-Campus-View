@@ -10,6 +10,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="img/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <script type="importmap">
 { "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
@@ -55,6 +58,12 @@
     <div id="chat-chips"></div>
     <form id="chat-form"><input id="chat-input" placeholder="Ask about campus or food in town…" autocomplete="off" aria-label="Your question"><button type="submit">Send</button></form>
     <button id="fb-open" type="button">Want to improve this map? Tell us how</button>
+    <button id="unlock-open" type="button">On campus? Unlock phone numbers</button>
+    <form id="unlock" hidden>
+      <input id="unlock-code" placeholder="Campus code" autocomplete="off" autocapitalize="characters" aria-label="Campus code">
+      <button type="submit">Unlock</button>
+      <p id="unlock-msg" role="status"></p>
+    </form>
   </div>
   <form id="fb" hidden>
     <h3>Want to improve this map?</h3>
@@ -122,5 +131,6 @@
 </dialog>
 
 <script type="module" src="main.js"></script>
+<script>if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));</script>
 </body>
 </html>

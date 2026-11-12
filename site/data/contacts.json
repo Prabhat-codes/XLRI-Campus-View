@@ -1,15 +1,9 @@
 {
- "_note": "XLRI support contacts, imported from a student's contact list with tools/import_contacts.py.",
+ "_note": "Public list of campus support roles. Names and numbers are only served to the campus version.",
  "contacts": [
   {
-   "name": "S K Ishtiyaque",
    "role": "Ad Empire, Bistupur (owner)",
    "place": null,
-   "phones": [
-    "+91 70042 00331",
-    "+91 77398 19551"
-   ],
-   "email": "adempirebistupur@gmail.com",
    "tags": [
     "ad",
     "empire",
@@ -25,12 +19,8 @@
    ]
   },
   {
-   "name": "Santosh Andrews",
    "role": "ADSA Office",
    "place": "Admin Building",
-   "phones": [
-    "+91 80922 71812"
-   ],
    "tags": [
     "adsa",
     "student",
@@ -40,12 +30,8 @@
    ]
   },
   {
-   "name": "John Murmu",
    "role": "Ambulance",
    "place": null,
-   "phones": [
-    "+91 79031 10752"
-   ],
    "tags": [
     "ambulance",
     "emergency",
@@ -57,12 +43,8 @@
    ]
   },
   {
-   "name": "Govind",
    "role": "Audio-visual",
    "place": null,
-   "phones": [
-    "+91 99315 02576"
-   ],
    "tags": [
     "audio",
     "visual",
@@ -75,12 +57,8 @@
    ]
   },
   {
-   "name": "Anoop",
    "role": "Bharat Tent House (owner)",
    "place": null,
-   "phones": [
-    "+91 98351 13613"
-   ],
    "tags": [
     "tent",
     "tent",
@@ -95,12 +73,8 @@
    ]
   },
   {
-   "name": "Bishu Da",
    "role": "Bishu's Canteen",
    "place": "Bishu Da",
-   "phones": [
-    "+91 72960 77497"
-   ],
    "tags": [
     "bishu",
     "canteen",
@@ -110,12 +84,8 @@
    ]
   },
   {
-   "name": "Bishu Da",
    "role": "Bishu's Canteen (owner)",
    "place": "Bishu Da",
-   "phones": [
-    "+91 99341 11398"
-   ],
    "tags": [
     "bishu",
     "canteen",
@@ -125,12 +95,8 @@
    ]
   },
   {
-   "name": "Electrical (general)",
    "role": "Electrical maintenance",
    "place": null,
-   "phones": [
-    "+91 87573 08281"
-   ],
    "tags": [
     "electrical",
     "electrician",
@@ -142,12 +108,8 @@
    ]
   },
   {
-   "name": "Anil",
    "role": "Electrical head",
    "place": null,
-   "phones": [
-    "+91 70049 57368"
-   ],
    "tags": [
     "electrical",
     "electrician",
@@ -159,12 +121,8 @@
    ]
   },
   {
-   "name": "Clarence",
    "role": "IC Corporate Lounge, corporate programme head",
    "place": "International Center",
-   "phones": [
-    "+91 99340 15843"
-   ],
    "tags": [
     "ic",
     "international",
@@ -174,12 +132,8 @@
    ]
   },
   {
-   "name": "Ranjeet",
    "role": "IC food",
    "place": "International Center",
-   "phones": [
-    "+91 62064 78584"
-   ],
    "tags": [
     "ic",
     "international",
@@ -189,13 +143,8 @@
    ]
   },
   {
-   "name": "Anil",
    "role": "IC food vendor",
    "place": "International Center",
-   "phones": [
-    "+91 85212 28612",
-    "+91 93303 75500"
-   ],
    "tags": [
     "ic",
     "international",
@@ -206,12 +155,8 @@
    ]
   },
   {
-   "name": "Mark",
    "role": "IC head",
    "place": "International Center",
-   "phones": [
-    "+91 99318 77443"
-   ],
    "tags": [
     "ic",
     "international",
@@ -222,12 +167,8 @@
    ]
   },
   {
-   "name": "Harsh",
    "role": "IC / NH hospitality (Rare Hospitality)",
    "place": "International Center",
-   "phones": [
-    "+91 95049 92233"
-   ],
    "tags": [
     "ic",
     "international",
@@ -240,12 +181,8 @@
    ]
   },
   {
-   "name": "Pravin Bhengra",
    "role": "IC sub-head",
    "place": "International Center",
-   "phones": [
-    "+91 97090 88793"
-   ],
    "tags": [
     "ic",
     "international",
@@ -253,12 +190,8 @@
    ]
   },
   {
-   "name": "IC Reception",
    "role": "IC reception (landline)",
    "place": "International Center",
-   "phones": [
-    "0657 665 3444"
-   ],
    "tags": [
     "ic",
     "international",
@@ -272,13 +205,8 @@
    ]
   },
   {
-   "name": "Vishnu",
    "role": "IC reception",
    "place": "International Center",
-   "phones": [
-    "+91 82354 40711",
-    "+91 62026 72991"
-   ],
    "tags": [
     "ic",
     "international",
@@ -292,12 +220,8 @@
    ]
   },
   {
-   "name": "Vinay",
    "role": "IC staff",
    "place": "International Center",
-   "phones": [
-    "+91 99343 66642"
-   ],
    "tags": [
     "ic",
     "international",
@@ -305,13 +229,8 @@
    ]
   },
   {
-   "name": "IT Helpdesk (LC1)",
    "role": "IT helpdesk, main (landline)",
    "place": "Learning Center 1",
-   "phones": [
-    "0657 665 3240"
-   ],
-   "email": "helpdesk@xlri.ac.in",
    "tags": [
     "it",
     "helpdesk",
@@ -325,12 +244,8 @@
    ]
   },
   {
-   "name": "IT Helpdesk (LC2)",
    "role": "IT helpdesk, LC2 (landline)",
    "place": "Learning Center 2",
-   "phones": [
-    "0657 665 3422"
-   ],
    "tags": [
     "it",
     "helpdesk",
@@ -344,12 +259,8 @@
    ]
   },
   {
-   "name": "Prosenjit",
    "role": "LC1 computer centre",
    "place": "Learning Center 1",
-   "phones": [
-    "+91 91420 87685"
-   ],
    "tags": [
     "lc1",
     "cc",
@@ -361,12 +272,8 @@
    ]
   },
   {
-   "name": "Amit Tigga",
    "role": "LC1 head",
    "place": "Learning Center 1",
-   "phones": [
-    "+91 80512 10111"
-   ],
    "tags": [
     "lc1",
     "head",
@@ -375,12 +282,8 @@
    ]
   },
   {
-   "name": "Raju",
    "role": "LC1 IT setup",
    "place": "Learning Center 1",
-   "phones": [
-    "+91 86519 57918"
-   ],
    "tags": [
     "lc1",
     "it",
@@ -391,12 +294,8 @@
    ]
   },
   {
-   "name": "Goutam",
    "role": "LC2 computer centre",
    "place": "Learning Center 2",
-   "phones": [
-    "+91 72508 17706"
-   ],
    "tags": [
     "lc2",
     "cc",
@@ -408,12 +307,8 @@
    ]
   },
   {
-   "name": "Felix",
    "role": "LC2 head",
    "place": "Learning Center 2",
-   "phones": [
-    "+91 62019 51200"
-   ],
    "tags": [
     "lc2",
     "head",
@@ -422,35 +317,23 @@
    ]
   },
   {
-   "name": "Mukesh",
    "role": "LC2 helpdesk",
    "place": "Learning Center 2",
-   "phones": [
-    "+91 92346 78514"
-   ],
    "tags": [
     "lc2",
     "helpdesk"
    ]
   },
   {
-   "name": "Praveen",
    "role": "LC2 staff",
    "place": "Learning Center 2",
-   "phones": [
-    "+91 70335 54656"
-   ],
    "tags": [
     "lc2"
    ]
   },
   {
-   "name": "Harry",
    "role": "Maintenance head",
    "place": null,
-   "phones": [
-    "+91 99315 61769"
-   ],
    "tags": [
     "maintenance",
     "repair",
@@ -463,12 +346,8 @@
    ]
   },
   {
-   "name": "OH Main Security",
    "role": "Old Hostel security (landline)",
    "place": "Nilima Hostel",
-   "phones": [
-    "0657 665 3299"
-   ],
    "tags": [
     "security",
     "old",
@@ -478,13 +357,8 @@
    ]
   },
   {
-   "name": "Gautam",
    "role": "KFMS supervisor, Old Hostel & LC2 (housekeeping)",
    "place": null,
-   "phones": [
-    "+91 82107 31379",
-    "+91 96081 84727"
-   ],
    "tags": [
     "kfms",
     "housekeeping",
@@ -497,12 +371,8 @@
    ]
   },
   {
-   "name": "Prince",
    "role": "KFMS supervisor, Old Hostel & LC2 (housekeeping)",
    "place": null,
-   "phones": [
-    "+91 98186 13638"
-   ],
    "tags": [
     "kfms",
     "housekeeping",
@@ -515,13 +385,8 @@
    ]
   },
   {
-   "name": "Boma",
    "role": "Security head",
    "place": "Main Gate",
-   "phones": [
-    "+91 79922 97929",
-    "+91 95340 24984"
-   ],
    "tags": [
     "security",
     "guard",
@@ -531,12 +396,8 @@
    ]
   },
   {
-   "name": "Amit Kujur",
    "role": "Central stores head",
    "place": null,
-   "phones": [
-    "+91 73197 18746"
-   ],
    "tags": [
     "stores",
     "central",
@@ -547,12 +408,8 @@
    ]
   },
   {
-   "name": "Aftab",
    "role": "AC technician, Tata Auditorium",
    "place": "Tata Auditorium",
-   "phones": [
-    "+91 70911 71145"
-   ],
    "tags": [
     "ac",
     "air",

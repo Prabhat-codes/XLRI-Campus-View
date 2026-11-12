@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Store Status · XLRI</title>
+<meta name="theme-color" content="#0b1016">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #0b1016; --card: #141b24; --line: rgba(255,255,255,.1); --text: #eef2f6; --dim: #9aa8b6; --accent: #f08a4b; --open: #2fa865; --closed: #d4483e; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; background: var(--ink); color: var(--text); font: 16px/1.45 Inter, system-ui, sans-serif; }
+  main { max-width: 440px; margin: 0 auto; padding: 24px 16px calc(24px + env(safe-area-inset-bottom)); min-height: 100vh; display: flex; flex-direction: column; gap: 16px; }
+  h1 { font: 600 30px/1.1 "Cormorant Garamond", Georgia, serif; margin: 8px 0 0; letter-spacing: .02em; }
+  .kicker { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
+  label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--dim); }
+  input, select { font: inherit; color: inherit; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; font-size: 18px; }
+  input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .btn { font: 600 18px Inter, sans-serif; border: 0; border-radius: 14px; padding: 16px; cursor: pointer; background: var(--accent); color: #1a0d04; }
+  .btn:disabled { opacity: .6; }
+  .msg { min-height: 1.4em; color: var(--dim); font-size: 14px; margin: 0; }
+  .msg.err { color: #f2a19a; }
+  .now { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; text-align: center; }
+  .now b { display: block; font-size: 28px; margin-top: 4px; }
+  .now.is-open b { color: #8fe3ad; } .now.is-closed b { color: #f2a19a; }
+  .big { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .big button { font: 700 24px Inter, sans-serif; border: 0; border-radius: 20px; padding: 34px 10px; cursor: pointer; color: #fff; }
+  .big .open { background: var(--open); } .big .closed { background: var(--closed); }
+  .big button:active { transform: scale(.98); }
+  .big button[aria-pressed="true"] { box-shadow: 0 0 0 4px rgba(255,255,255,.75); }
+  .small { background: none; border: 0; color: var(--dim); font: inherit; font-size: 13px; text-decoration: underline; cursor: pointer; align-self: center; margin-top: auto; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <div>
+    <div class="kicker">XLRI campus · store status</div>
+    <h1 id="title">Mark your store open or closed</h1>
+  </div>
+
+  <!-- step 1: one-time login on this phone -->
+  <form id="login" hidden>
+    <label>Your store
+      <select id="store" required></select>
+    </label>
+    <label>Password
+      <input id="pw" type="password" inputmode="numeric" autocomplete="current-password" required placeholder="Given to you with the QR code">
+    </label>
+    <button class="btn" id="go" type="submit">Continue</button>
+    <p class="msg" id="login-msg" role="status"></p>
+  </form>
+
+  <!-- step 2: the daily screen -->
+  <section id="panel" hidden>
+    <div class="now" id="now"><span>Right now students see</span><b id="now-text">…</b><span id="now-time" class="msg"></span></div>
+    <div class="big" style="margin-top:16px">
+      <button class="open" id="b-open" aria-pressed="false">OPEN</button>
+      <button class="closed" id="b-closed" aria-pressed="false">CLOSED</button>
+    </div>
+    <p class="msg" id="panel-msg" role="status" style="text-align:center;margin-top:12px"></p>
+  </section>
+  <button class="small" id="logout" hidden>Not your store? Log out</button>
+</main>
+<script>
+  // same list as STORES in tools/apps_script/Code.gs
+  const STORES = ["Aiyer's Café", 'Jampot', 'Bishu Da', 'Aziz Juice Center', 'Shaligram', 'Jaima', 'Gents Saloon', 'Campus Cafe', 'Dadoos', 'XLRI Dhaba', 'GMP Mess'];
+  const $ = (id) => document.getElementById(id);
+  const KEY = 'xlri-store-login';
+  let API = '', me = null;
+  const get = (q) => fetch(API + '?' + new URLSearchParams(q)).then((r) => r.json());
+  const fmt = (ms) => new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit', day: 'numeric', month: 'short' }).format(new Date(ms));
+
+  function showNow(st) {
+    const box = $('now');
+    box.className = 'now' + (st ? (st.open ? ' is-open' : ' is-closed') : '');
+    $('now-text').textContent = st ? (st.open ? 'Open' : 'Closed') : 'Not marked yet';
+    $('now-time').textContent = st ? 'Marked at ' + fmt(st.at) : 'Your usual timings are shown until you tap.';
+    $('b-open').setAttribute('aria-pressed', !!(st && st.open));
+    $('b-closed').setAttribute('aria-pressed', !!(st && !st.open));
+  }
+  async function enter() {
+    $('login').hidden = true; $('panel').hidden = false; $('logout').hidden = false;
+    $('title').textContent = me.store;
+    try { const r = await get({ action: 'status' }); showNow(r.status && r.status[me.store]); } catch { $('panel-msg').textContent = 'Could not load the current status. Check your internet.'; }
+  }
+  async function mark(open) {
+    $('panel-msg').textContent = 'Saving…';
+    $('b-open').disabled = $('b-closed').disabled = true;
+    try {
+      const r = await get({ action: 'set', store: me.store, pw: me.pw, open: open ? '1' : '0' });
+      if (r.ok) { showNow(r.status); $('panel-msg').textContent = open ? 'Done. Students now see you as open.' : 'Done. Students now see you as closed.'; }
+      else if (r.error === 'password') { $('panel-msg').textContent = 'Your password changed. Please log in again.'; logout(); }
+      else $('panel-msg').textContent = 'Something went wrong. Try again.';
+    } catch { $('panel-msg').textContent = 'No internet? Try again in a moment.'; }
+    $('b-open').disabled = $('b-closed').disabled = false;
+  }
+  function logout() { try { localStorage.removeItem(KEY); } catch {} me = null; $('panel').hidden = true; $('logout').hidden = true; $('login').hidden = false; $('title').textContent = 'Mark your store open or closed'; }
+
+  $('b-open').addEventListener('click', () => mark(true));
+  $('b-closed').addEventListener('click', () => mark(false));
+  $('logout').addEventListener('click', logout);
+  $('login').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const store = $('store').value, pw = $('pw').value.trim();
+    $('go').disabled = true; $('login-msg').className = 'msg'; $('login-msg').textContent = 'Checking…';
+    try {
+      const r = await get({ action: 'login', store, pw });
+      if (r.ok) { me = { store, pw }; try { localStorage.setItem(KEY, JSON.stringify(me)); } catch {} enter(); }
+      else { $('login-msg').className = 'msg err'; $('login-msg').textContent = 'Wrong password for ' + store + '.'; }
+    } catch { $('login-msg').className = 'msg err'; $('login-msg').textContent = 'No internet? Try again.'; }
+    $('go').disabled = false;
+  });
+
+  (async () => {
+    const want = new URLSearchParams(location.search).get('s');
+    for (const s of STORES) { const o = document.createElement('option'); o.textContent = s; if (s === want) o.selected = true; $('store').append(o); }
+    try { API = (await fetch('data/places.json', { cache: 'no-cache' }).then((r) => r.json())).feedbackUrl; } catch {}
+    try { me = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch { me = null; }
+    if (me && want && me.store !== want) me = null;   // scanned another store's QR on this phone
+    if (me) enter(); else { $('login').hidden = false; }
+  })();
+</script>
+</body>
+</html>

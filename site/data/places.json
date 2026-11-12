@@ -37,7 +37,7 @@
           "21:00"
         ]
       ],
-      "phone": "+91 94962 94335"
+      "hasPhone": true
     },
     {
       "name": "Jampot",
@@ -66,7 +66,7 @@
         ]
       ],
       "note": "Closes around 3–4 am",
-      "phone": "+91 93040 73115"
+      "hasPhone": true
     },
     {
       "name": "Bishu Da",
@@ -102,8 +102,7 @@
         ]
       ],
       "note": "Opens at different times through the day; usually open at night",
-      "phone": "+91 99341 11398",
-      "phoneLabel": "Delivery"
+      "hasPhone": true
     },
     {
       "name": "Shaligram",
@@ -130,8 +129,7 @@
           "10:00",
           "21:00"
         ]
-      ],
-      "phone": null
+      ]
     },
     {
       "name": "Aziz Juice Center",
@@ -159,7 +157,7 @@
         ]
       ],
       "note": "Closed only 4–11 am",
-      "phone": "+91 70049 08746"
+      "hasPhone": true
     },
     {
       "name": "Jaima",
@@ -174,7 +172,7 @@
         "jai maa"
       ],
       "hours": null,
-      "phone": "+91 76674 48925"
+      "hasPhone": true
     },
     {
       "name": "Gents Saloon",
@@ -201,7 +199,7 @@
         "men"
       ],
       "hours": null,
-      "phone": "+91 98355 89133"
+      "hasPhone": true
     },
     {
       "name": "Jehangir Gandhy Library",
@@ -230,8 +228,7 @@
           "06:00"
         ]
       ],
-      "note": "Closed about 6–8 am",
-      "phone": null
+      "note": "Closed about 6–8 am"
     },
     {
       "name": "Learning Center 1",
@@ -255,8 +252,7 @@
         "lecture",
         "lc1"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Learning Center 2",
@@ -280,8 +276,7 @@
         "lecture",
         "lc2"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Tata Auditorium",
@@ -301,8 +296,7 @@
         "events",
         "talks"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Main Gate",
@@ -322,8 +316,7 @@
         "cab",
         "auto"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Exit Gate",
@@ -339,8 +332,7 @@
         "marine drive",
         "river"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Fr. Enright Hostel",
@@ -360,8 +352,7 @@
         "old hostel",
         "biggest hostel"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Nilima Hostel",
@@ -377,8 +368,7 @@
         "old hostel",
         "oh"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "MTR Hostel",
@@ -394,8 +384,7 @@
         "old hostel",
         "oh"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "STR (St Thomas Hostel)",
@@ -414,8 +403,7 @@
         "old hostel",
         "oh"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "NH Boys Hostel",
@@ -434,8 +422,7 @@
         "nh",
         "boys"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "NH Girls Hostel",
@@ -454,8 +441,7 @@
         "nh",
         "girls"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "MDP Hostel",
@@ -474,8 +460,7 @@
         "accommodation",
         "parents"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Sports Block",
@@ -504,8 +489,7 @@
         "indoor games",
         "sports"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "JLT",
@@ -524,8 +508,7 @@
         "celebration",
         "open air"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Football Ground",
@@ -544,8 +527,7 @@
         "jogging",
         "athletics"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Football Turf",
@@ -559,8 +541,7 @@
         "futsal",
         "sports"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Tennis Court",
@@ -573,8 +554,7 @@
         "sports",
         "court"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Diamond Jubilee Park",
@@ -590,8 +570,7 @@
         "green",
         "sit"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Teachers' Residence",
@@ -610,8 +589,7 @@
         "housing",
         "staff quarters"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Campus Cafe",
@@ -625,8 +603,7 @@
         "food",
         "snacks"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Dadoos",
@@ -640,8 +617,7 @@
         "food",
         "snacks"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "XLRI Dhaba",
@@ -654,8 +630,7 @@
         "food",
         "meals"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "GMP Mess",
@@ -669,8 +644,7 @@
         "meals",
         "gmp"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "Admin Building",
@@ -685,8 +659,7 @@
         "office",
         "offices"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "A-Block",
@@ -698,8 +671,7 @@
         "residence",
         "rooms"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "B-Block",
@@ -711,8 +683,7 @@
         "residence",
         "rooms"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "C-Block",
@@ -724,8 +695,7 @@
         "residence",
         "rooms"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     },
     {
       "name": "D-Block",
@@ -737,8 +707,7 @@
         "residence",
         "rooms"
       ],
-      "hours": null,
-      "phone": null
+      "hours": null
     }
   ]
 }

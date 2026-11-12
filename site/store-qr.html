@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Store QR Codes · XLRI</title>
+<style>
+  :root { --text: #1b1b1b; --dim: #666; --bg: #ffffff; --line: #ddd; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --text: #eee; --dim: #aaa; --bg: #111; --line: #333; } }
+  body { margin: 0; padding: 24px 16px; background: var(--bg); color: var(--text); font: 15px/1.4 system-ui, sans-serif; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  p.note { color: var(--dim); margin: 0 0 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .card { border: 1px solid var(--line); border-radius: 12px; padding: 16px; text-align: center; break-inside: avoid; background: #fff; color: #111; }
+  .card h2 { font-size: 20px; margin: 0 0 8px; }
+  .card svg { width: 180px; height: 180px; }
+  .card small { display: block; color: #555; margin-top: 6px; }
+  @media print { body { padding: 0; } p.note, h1 { display: none; } .card { border: 1px dashed #999; } }
+</style>
+</head>
+<body>
+<h1>Store QR codes</h1>
+<p class="note">Print this page (one card per store) and stick each card at its counter. Scanning opens the Open/Closed page for that store. Passwords are in the "Stores" tab of the sheet.</p>
+<div class="grid" id="grid"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+  const STORES = ["Aiyer's Café", 'Jampot', 'Bishu Da', 'Aziz Juice Center', 'Shaligram', 'Jaima', 'Gents Saloon', 'Campus Cafe', 'Dadoos', 'XLRI Dhaba', 'GMP Mess'];
+  const base = location.origin + location.pathname.replace(/store-qr\.html$/, '') + 'store.html?s=';
+  for (const s of STORES) {
+    const qr = qrcode(0, 'M'); qr.addData(base + encodeURIComponent(s)); qr.make();
+    const card = document.createElement('div'); card.className = 'card';
+    const h = document.createElement('h2'); h.textContent = s;
+    const box = document.createElement('div'); box.innerHTML = qr.createSvgTag({ scalable: true, margin: 2 });
+    const small = document.createElement('small'); small.textContent = 'Scan to mark Open / Closed';
+    card.append(h, box, small); document.getElementById('grid').append(card);
+  }
+</script>
+</body>
+</html>

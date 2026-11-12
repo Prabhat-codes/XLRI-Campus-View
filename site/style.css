@@ -289,3 +289,10 @@ dialog h2 { font: 600 26px "Cormorant Garamond", Georgia, serif; }
 #chat-chips { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; overflow: visible; padding: 0 12px 8px; }
 #chat-chips button { white-space: normal; text-align: left; font-size: 11.5px; line-height: 1.3; padding: 6px 9px; border-radius: 10px; }
 @media (prefers-reduced-motion: reduce) { .avatar, .avatar .eyes { animation: none; } }
+#unlock-open { background: none; border: 0; color: var(--dim); padding: 0 12px 10px; cursor: pointer; font-size: 12px; }
+#unlock-open:hover { color: #ffd9c0; }
+#unlock { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 12px; }
+#unlock[hidden] { display: none; }
+#unlock input { flex: 1; min-width: 0; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line); border-radius: 9px; padding: 8px 10px; font-size: 14px; letter-spacing: 0.08em; }
+#unlock button { background: var(--accent); color: #1a0d04; border: 0; border-radius: 9px; padding: 0 14px; font-weight: 600; cursor: pointer; }
+#unlock-msg { width: 100%; margin: 0; font-size: 12px; color: var(--dim); min-height: 1em; }
