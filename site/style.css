@@ -256,3 +256,22 @@ dialog h2 { font: 600 26px "Cormorant Garamond", Georgia, serif; }
 #info ul.contacts, .msg ul { list-style: none; }
 #info ul.contacts { margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: #c9d3dc; }
 #info ul.contacts .phone, .msg li .phone { margin-top: 3px; padding: 1px 8px; font-size: 12px; }
+
+/* ---------- slim layout: search + info top right, place/time menus bottom right ---------- */
+#tools { gap: 2px; padding: 4px; }
+#tools button { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border-radius: 10px; }
+#fab { position: fixed; right: var(--pad); bottom: calc(var(--pad) + env(safe-area-inset-bottom)); z-index: 6; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.fab-btn { position: static; width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; color: var(--text); }
+.fab-btn.on, .fab-btn:hover { color: #ffd9c0; border-color: rgba(240, 138, 75, 0.55); }
+.menu { position: static; padding: 8px; width: min(260px, calc(100vw - 2 * var(--pad))); }
+.menu[hidden], #timebar[hidden] { display: none; }
+#places { flex-direction: column; overflow: visible; padding: 0; gap: 4px; max-height: 50vh; overflow-y: auto; }
+#places button { text-align: left; border-radius: 9px; padding: 9px 12px; }
+#presets { flex-direction: column; gap: 4px; }
+#presets button { text-align: left; border-radius: 9px; padding: 9px 12px; }
+#timebar { margin-top: 8px; padding: 4px 4px 2px; }
+#chat-btn { bottom: calc(var(--pad) + 64px); }
+@media (max-width: 760px) {
+  #chat-btn { bottom: calc(var(--pad) + env(safe-area-inset-bottom)); }
+  #info { top: 72px; }
+}

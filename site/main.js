@@ -147,7 +147,6 @@ async function boot() {
   buildLabels();
   buildPlaces();
   step('Raising buildings from their footprints');
-  $('stats').innerHTML = `<b>${meta.counts.buildings.toLocaleString('en-IN')}</b> buildings and <b>${meta.counts.trees.toLocaleString('en-IN')}</b> trees placed from the map`;
   applyQuality();
   resize();
   setTime(+$('time').value);
@@ -663,7 +662,8 @@ function buildPlaces() {
   const at = (name) => labels.find((l) => l.n === name);   // baked labels and restaurant pins
   const list = [
     HOME,
-    { name: 'Learning Centre', ref: 'Learning Center 2', dist: 330, heading: 20, tilt: 62 },
+    { name: 'LC1', ref: 'Learning Center 1', dist: 300, heading: -20, tilt: 62 },
+    { name: 'LC2', ref: 'Learning Center 2', dist: 330, heading: 20, tilt: 62 },
     { name: 'Main Gate', ref: 'Main Gate', dist: 120, heading: 15, tilt: 70 },
     { name: 'New Hostel', ref: 'NH Boys Hostel', dist: 380, heading: 150, tilt: 60 },
     { name: 'Old Hostels', ref: 'Nilima Hostel', dist: 340, heading: 0, tilt: 58 },
@@ -685,7 +685,7 @@ function buildPlaces() {
     const b = document.createElement('button');
     b.textContent = p.name;
     if (p === HOME) b.className = 'home';
-    b.addEventListener('click', () => flyTo(view));
+    b.addEventListener('click', () => { flyTo(view); openMenu(null); });
     $('places').appendChild(b);
   }
 }
@@ -724,18 +724,27 @@ function setTime(t) {
 $('time').addEventListener('input', (e) => { timeAnim = null; setTime(+e.target.value); });
 let timeAnim = null;
 for (const b of document.querySelectorAll('#presets button')) {
-  b.addEventListener('click', () => { timeAnim = { from: +$('time').value, to: +b.dataset.t, t0: performance.now() }; });
+  if (b.dataset.t) b.addEventListener('click', () => { timeAnim = { from: +$('time').value, to: +b.dataset.t, t0: performance.now() }; openMenu(null); });
 }
 
 // ---------------------------------------------------------------- UI
-$('t-labels').addEventListener('click', (e) => { labelsOn = !labelsOn; e.currentTarget.classList.toggle('on', labelsOn); e.currentTarget.setAttribute('aria-pressed', labelsOn); });
-$('t-spin').addEventListener('click', (e) => { controls.autoRotate = !controls.autoRotate; e.currentTarget.classList.toggle('on', controls.autoRotate); e.currentTarget.setAttribute('aria-pressed', controls.autoRotate); });
 $('t-about').addEventListener('click', () => $('about').showModal());
-$('compass').addEventListener('click', () => flyTo({ ...getView(), heading: 0 }, 900));
-$('quality').addEventListener('change', applyQuality);
+// bottom-right menus: places and time of day; only one open at a time, the map closes them
+function openMenu(which) {
+  for (const [m, b] of [['menu-places', 'btn-places'], ['menu-time', 'btn-time']]) {
+    const on = m === which && $(m).hidden;
+    $(m).hidden = !on;
+    $(b).setAttribute('aria-expanded', on);
+    $(b).classList.toggle('on', on);
+  }
+}
+$('btn-places').addEventListener('click', () => openMenu('menu-places'));
+$('btn-time').addEventListener('click', () => openMenu('menu-time'));
+$('custom-time').addEventListener('click', () => { $('timebar').hidden = !$('timebar').hidden; });
+canvas.addEventListener('pointerdown', () => openMenu(null));
 let quality = 'high';
 function applyQuality() {
-  const pick = $('quality').value;
+  const pick = 'auto';
   quality = pick === 'auto' ? (coarse || (navigator.deviceMemory && navigator.deviceMemory <= 4) ? 'low' : 'high') : pick;
   const low = quality === 'low';
   sun.castShadow = !low;
@@ -807,8 +816,6 @@ function frame(now) {
   composer.render();
   updateLabels();
 
-  const head = Math.atan2(controls.target.x - camera.position.x, -(controls.target.z - camera.position.z));
-  $('compass').firstElementChild.style.transform = `rotate(${-head}rad)`;
   if (now - whereTick > 250) {
     whereTick = now;
     const x = controls.target.x, y = -controls.target.z;

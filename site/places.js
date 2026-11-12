@@ -405,9 +405,16 @@ export function setupPlaces(data, { goTo }, food = {}, people = {}) {
     log.append(m);
     log.scrollTop = log.scrollHeight;
   }
-  function reply(q) {
+  // every question goes to the "Questions" tab of the feedback sheet, marked if it could not be answered
+  function logQuestion(q, a, source) {
+    if (!data.feedbackUrl) return;
+    const answered = a.items.length > 0;
+    fetch(data.feedbackUrl, { method: 'POST', mode: 'no-cors', body: new URLSearchParams({ kind: 'question', question: q.slice(0, 500), answered: answered ? 'Yes' : 'No', source }) }).catch(() => {});
+  }
+  function reply(q, source = 'typed') {
     say('me', q);
     const a = answer(q);
+    logQuestion(q, a, source);
     const box = document.createDocumentFragment();
     if (a.intro) box.append(el('p', null, a.intro));
     if (a.items.length) {
@@ -438,7 +445,7 @@ export function setupPlaces(data, { goTo }, food = {}, people = {}) {
     say('bot', box);
     if (a.items.length === 1) goTo(a.items[0].place.name, true);
   }
-  for (const q of PRESETS) { const b = el('button', null, q); b.addEventListener('click', () => reply(q)); chips.append(b); }
+  for (const q of PRESETS) { const b = el('button', null, q); b.addEventListener('click', () => reply(q, 'preset')); chips.append(b); }
   form.addEventListener('submit', (e) => { e.preventDefault(); const q = input.value.trim(); if (!q) return; input.value = ''; reply(q); });
   function openChat() {
     chat.hidden = false; $('chat-btn').hidden = true;

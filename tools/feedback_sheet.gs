@@ -9,14 +9,26 @@
  *  4. Copy the Web app URL (ends in /exec) and put it in site/data/places.json as "feedbackUrl".
  *
  * Each submission adds one row: time (IST), type, feedback, name, contact, and the place the map was showing.
+ *
+ * Questions typed into "Ask Me Anything" go to a second tab, "Questions":
+ * question, whether it could be answered, time (IST), and whether it was typed or a preset button.
+ * Filter column B for "No" to see what to add next.
+ *
+ * After changing this file: Deploy -> Manage deployments -> edit (pencil) -> Version: New version -> Deploy.
+ * The web-app URL stays the same.
  */
 const HEADERS = ['Time (IST)', 'Type', 'Feedback', 'Name', 'Contact', 'Map was showing'];
+
+const Q_HEADERS = ['Question', 'Could answer?', 'Time (IST)', 'Typed or preset'];
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+    const q = (e && e.parameter) || {};
+    if (q.kind === 'question') return logQuestion(q);
+    const book = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = book.getSheetByName('Sheet1') || book.getSheets()[0];   // feedback tab; questions go to their own tab
     if (sheet.getLastRow() === 0) {
       sheet.appendRow(HEADERS);
       sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
@@ -41,6 +53,23 @@ function doPost(e) {
   } finally {
     lock.releaseLock();
   }
+}
+
+function logQuestion(p) {
+  const book = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = book.getSheetByName('Questions') || book.insertSheet('Questions');
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(Q_HEADERS);
+    sheet.getRange(1, 1, 1, Q_HEADERS.length).setFontWeight('bold');
+    sheet.setFrozenRows(1);
+  }
+  const clean = (v, max) => { const s = String(v || '').slice(0, max); return /^[=+\-@]/.test(s) ? "'" + s : s; };
+  const question = clean(p.question, 500).trim();
+  if (!question) return reply({ ok: false, error: 'empty' });
+  const answered = p.answered === 'Yes' ? 'Yes' : 'No';
+  sheet.appendRow([question, answered, Utilities.formatDate(new Date(), 'Asia/Kolkata', 'yyyy-MM-dd HH:mm'), p.source === 'preset' ? 'Preset' : 'Typed']);
+  if (answered === 'No') sheet.getRange(sheet.getLastRow(), 2).setBackground('#fde2e1');
+  return reply({ ok: true });
 }
 
 function reply(obj) {
