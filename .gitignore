@@ -3,3 +3,6 @@ raw/
 tools/.venv/
 .vercel/
 __pycache__/
+
+.vercel
+.env*
