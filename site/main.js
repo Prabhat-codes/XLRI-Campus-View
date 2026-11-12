@@ -25,7 +25,7 @@ function step(msg) {
   if (msg) $('loader-msg').textContent = msg;
 }
 // bump DATA_VERSION whenever site/data changes, so browsers never mix new code with old cached data
-const DATA_VERSION = '8';
+const DATA_VERSION = '9';
 const D = (f) => `data/${f}?v=${DATA_VERSION}`;
 const texLoader = new THREE.TextureLoader();
 const loadTex = (url) => new Promise((res, rej) => texLoader.load(url, res, undefined, rej));
@@ -102,7 +102,7 @@ const nightMats = [];   // materials that only show after dark
 let trees = null, treeCount = 0;
 
 async function boot() {
-  const [m, bBuf, tBuf, ground, campusTex, placesData, foodData] = await Promise.all([
+  const [m, bBuf, tBuf, ground, campusTex, placesData, foodData, contactsData] = await Promise.all([
     fetch(D('meta.json')).then((r) => r.json()).then((v) => (step('Laying out streets'), v)),
     fetch(D('buildings.bin')).then((r) => r.arrayBuffer()).then((v) => (step('Reading building footprints'), v)),
     fetch(D('trees.bin')).then((r) => r.arrayBuffer()).then((v) => (step('Counting trees'), v)),
@@ -110,9 +110,10 @@ async function boot() {
     loadTex(D('campus.jpg')).then((v) => (step('Sharpening the campus'), v)),
     fetch(D('places.json')).then((r) => (r.ok ? r.json() : { places: [] })).catch(() => ({ places: [] })),
     fetch(D('restaurants.json')).then((r) => (r.ok ? r.json() : { restaurants: [] })).catch(() => ({ restaurants: [] })),
+    fetch(D('contacts.json')).then((r) => (r.ok ? r.json() : { contacts: [] })).catch(() => ({ contacts: [] })),
   ]);
   meta = m;
-  PL = setupPlaces(placesData, { goTo }, foodData);
+  PL = setupPlaces(placesData, { goTo }, foodData, contactsData);
   buildGround(ground, campusTex);
   buildWater();
   await nextFrame();

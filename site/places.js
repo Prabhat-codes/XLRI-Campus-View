@@ -45,6 +45,21 @@ const TIME_WORDS = new Set('open opened opening close closes closed closing now 
 const stem = (t) => (t.length > 3 && t.endsWith('s') ? t.slice(0, -1) : t);
 
 let PLACES = [];
+let CONTACTS = [];
+// questions about a service rather than a place: these always look in the contacts list
+const SERVICE_RE = /\b(help|helpdesk|helpline|emergency|ambulance|doctor|medical|electric\w*|maintenance|repair|plumb\w*|security|guard|housekeeping|cleaning|kfms|ac|aircon|wifi|internet|network|projector|audio|av|mic|tent|shamiana|printing|flex|banner\w*|posters?|stores?|adsa|reception|head|staff|contacts?|in charge|incharge)\b/;
+function searchContacts(qn) {
+  const want = qn.split(' ').filter((t) => t && !STOP.has(t) && !TIME_WORDS.has(t) && !/^(number|numbers|phone|call|contact|contacts|mobile|whatsapp|xlri)$/.test(t)).map(stem);
+  const padded = ' ' + qn + ' ';
+  const places = PLACES.filter((p) => p.kind !== 'restaurant' && [norm(p.name), ...p._aliases].some((k) => k.length > 1 && padded.includes(' ' + k + ' '))).map((p) => p.name);
+  return CONTACTS.map((c) => {
+    let sc = 0;
+    for (const t of want) { if (c._tags.includes(t)) sc += 10; else if (c._words.includes(t)) sc += 6; }
+    if (c.place && places.includes(c.place)) sc += 9;
+    return { c, sc };
+  }).filter((r) => r.sc >= 9).sort((a, b) => b.sc - a.sc).map((r) => r.c);
+}
+const contactItem = (c) => ({ contact: c });
 const byName = new Map();
 
 // two-word phrases that mean one thing: "south indian" should not also match plain "indian" places
@@ -120,7 +135,8 @@ const byOpen = (list, now) => list.map((p) => ({ p, st: status(p, now) })).sort(
 export function answer(q, now = nowIST()) {
   const qn = norm(q);
   const words = new Set(qn.split(' '));
-  const wantsPhone = /\b(number|numbers|phone|call|contact|mobile|whatsapp|delivery|deliver)\b/.test(qn);
+  const wantsPhone = /\b(number|numbers|phone|call|contact|contacts|mobile|whatsapp|delivery|deliver)\b/.test(qn);
+  const wantsPeople = wantsPhone || SERVICE_RE.test(qn);
   const town = TOWN_RE.test(qn);
   const wantsTime = [...words].some((w) => TIME_WORDS.has(w)) || /\bwhat s open\b/.test(qn);
   const topic = qn.split(' ').filter((t) => t && !STOP.has(t) && !TIME_WORDS.has(t) && !/^(number|numbers|phone|call|contact|mobile)$/.test(t));
@@ -139,17 +155,27 @@ export function answer(q, now = nowIST()) {
         return { place: p, line: `${p.closed ? p.closed + '. ' : ''}${ratingText(p)} · ${p.area}. ${sure.length ? 'Recommended: ' + sure.join(', ') + '. ' : ''}${maybe.length ? 'Possible, unconfirmed: ' + maybe.join(', ') + '.' : ''}${p.skip.length ? ' Skip: ' + p.skip.map((d) => d.d).join(', ') + '.' : ''}`, link: p.mapsUrl };
       }
       const st = status(p, now);
-      if (wantsPhone) return { place: p, line: p.phone ? '' : `I don't have a number for ${p.name} yet.`, phone: p.phone, phoneLabel: p.phoneLabel };
+      const people = CONTACTS.filter((c) => c.place === p.name && !(c.phones.length === 1 && c.phones[0] === p.phone));   // skip a repeat of the place's own number
+      if (wantsPeople && (people.length || wantsPhone)) {
+        if (people.length) return [...(p.phone ? [{ place: p, line: '', phone: p.phone, phoneLabel: p.phoneLabel }] : [{ place: p, line: '' }]), ...people.map(contactItem)];
+        return { place: p, line: p.phone ? '' : `I don't have a number for ${p.name} yet.`, phone: p.phone, phoneLabel: p.phoneLabel };
+      }
       const line = [st.text || (wantsTime ? NOT_SURE : ''), p.hours ? `(${hoursText(p)})` : ''].filter(Boolean).join(' ');
       return { place: p, line: wantsTime ? line : [p.desc, line].filter(Boolean).join(' '), phone: wantsTime ? null : p.phone, phoneLabel: p.phoneLabel };
     });
-    return { intro: wantsTime ? clock : '', items, outro: '' };
+    return { intro: wantsTime ? clock : '', items: items.flat(), outro: '' };
+  }
+
+  // 1b. a service or department: ambulance, electrician, IT helpdesk, security...
+  if (wantsPhone || SERVICE_RE.test(qn)) {
+    const people = searchContacts(qn).slice(0, 6);
+    if (people.length) return { intro: 'Here\u2019s who to call:', items: people.map(contactItem), outro: '' };
   }
 
   // 2. "phone numbers" with no place
   if (wantsPhone && !topic.length) {
     const items = PLACES.filter((p) => p.phone).map((p) => ({ place: p, line: '', phone: p.phone, phoneLabel: p.phoneLabel }));
-    return { intro: 'Numbers I have:', items, outro: '' };
+    return { intro: 'Numbers I have:', items, outro: 'I also have campus support contacts: ask for the ambulance, security, IT helpdesk, electrical, maintenance, housekeeping, LC1, LC2 or the International Center.' };
   }
 
   // 3. "what's open right now?"
@@ -218,7 +244,8 @@ function phoneLink(phone, label) {
 function statusPill(st) { return st.text ? el('span', 'pill ' + st.state, st.text) : null; }
 
 // ---------------------------------------------------------------- setup
-export function setupPlaces(data, { goTo }, food = {}) {
+export function setupPlaces(data, { goTo }, food = {}, people = {}) {
+  CONTACTS = (people.contacts || []).map((c) => ({ ...c, _tags: c.tags.map((t) => stem(norm(t))), _words: norm(c.name + ' ' + c.role).split(' ').map(stem) }));
   const restaurants = food.restaurants || [];
   PLACES = (data.places || []).map((p) => ({ ...p, _aliases: (p.aliases || []).map(norm), _tags: (p.tags || []).map(norm), _desc: norm(p.desc || '') }))
     .concat(restaurants.map((r) => ({
@@ -267,6 +294,18 @@ export function setupPlaces(data, { goTo }, food = {}) {
     if (d) card.append(el('p', null, d));
     if (p && p.hours) card.append(el('p', 'hours', 'Hours: ' + hoursText(p) + (p.note ? ` · ${p.note}` : '')));
     if (p && p.phone) card.append(phoneLink(p.phone, p.phoneLabel));
+    const people = CONTACTS.filter((c) => c.place === l.n);
+    if (people.length) {
+      card.append(el('div', 'sub', 'Contacts'));
+      const ul = el('ul', 'contacts');
+      for (const c of people) {
+        const li = el('li');
+        li.append(el('b', null, c.name), el('span', null, ' \u00b7 ' + c.role));
+        for (const ph of c.phones) li.append(' ', phoneLink(ph, ''));
+        ul.append(li);
+      }
+      card.append(ul);
+    }
     if (p && p.tags && p.tags.length) {
       const t = el('div', 'tags');
       for (const tag of p.tags.slice(0, 8)) {
@@ -357,7 +396,7 @@ export function setupPlaces(data, { goTo }, food = {}) {
 
   // --- assistant
   const chat = $('chat'), log = $('chat-log'), form = $('chat-form'), input = $('chat-input'), chips = $('chat-chips');
-  const PRESETS = ["What's open right now?", 'Where to eat in Jamshedpur?', "What's good at Mocha?", 'Best pasta in town', 'Where can I get printouts?',
+  const PRESETS = ["What's open right now?", 'Ambulance number', 'Wifi not working', 'LC2 contacts', 'Where to eat in Jamshedpur?', "What's good at Mocha?", 'Best pasta in town', 'Where can I get printouts?',
     'Best South Indian?', 'Late night food', 'Best momos', 'Dessert in town', 'Bar for beer', "Jampot's number", 'Is the library open?',
     'Where do I get juice?', 'Where is the gym?', 'Stationery shop', 'Where are the parties?', 'All phone numbers'];
   function say(who, content) {
@@ -375,6 +414,14 @@ export function setupPlaces(data, { goTo }, food = {}) {
       const ul = el('ul');
       for (const it of a.items) {
         if (it.heading) { ul.append(el('li', 'heading', it.heading)); continue; }
+        if (it.contact) {
+          const c = it.contact, li = el('li');
+          li.append(el('b', null, c.name), el('span', null, ' \u00b7 ' + c.role + (c.place ? ` (${c.place})` : '')));
+          for (const ph of c.phones) li.append(' ', phoneLink(ph, ''));
+          if (c.email) { const m = el('a', 'maplink', c.email); m.href = 'mailto:' + c.email; li.append(' ', m); }
+          ul.append(li);
+          continue;
+        }
         const li = el('li');
         const go = el('button', 'go', it.place.name);
         go.title = 'Show on map';

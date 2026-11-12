@@ -253,3 +253,6 @@ dialog h2 { font: 600 26px "Cormorant Garamond", Georgia, serif; }
 .lb.food.maybe::before { background: transparent; box-shadow: inset 0 0 0 2px #ff7a5c, 0 0 0 2px rgba(11, 16, 22, 0.75); }
 .lb.food.shut { color: #aab3bc; }
 .lb.food.shut::before { background: #7d8792; box-shadow: 0 0 0 2px rgba(11, 16, 22, 0.75); }
+#info ul.contacts, .msg ul { list-style: none; }
+#info ul.contacts { margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: #c9d3dc; }
+#info ul.contacts .phone, .msg li .phone { margin-top: 3px; padding: 1px 8px; font-size: 12px; }
