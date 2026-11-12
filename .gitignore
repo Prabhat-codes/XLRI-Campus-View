@@ -1,0 +1,5 @@
+# downloaded source data and tooling; rebuild with the scripts in tools/
+raw/
+tools/.venv/
+.vercel/
+__pycache__/
