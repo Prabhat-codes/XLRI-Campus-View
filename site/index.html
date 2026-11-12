@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0b1016">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script type="importmap">
 { "imports": {
@@ -22,12 +22,15 @@
 <div id="labels" aria-hidden="true"></div>
 
 <div id="loader">
+  <div class="loader-photo" aria-hidden="true"></div>
   <div class="loader-inner">
+    <div class="loader-kicker">The campus in 3D</div>
     <div class="loader-title">XLRI</div>
     <div class="loader-sub">Jamshedpur</div>
     <div class="loader-bar"><i id="loader-fill"></i></div>
     <div class="loader-msg" id="loader-msg">Fetching the map</div>
   </div>
+  <p class="loader-note">Not affiliated with XLRI. Made by a student.</p>
 </div>
 
 <header class="panel" id="title">
@@ -37,6 +40,7 @@
 
 <nav class="panel" id="tools" aria-label="Map options">
   <button id="compass" title="Face north" aria-label="Face north"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 3l4 9h-8z" fill="#f08a4b"/><path d="M12 21l-4-9h8z" fill="#8493a3"/></svg></button>
+  <button id="search-btn" aria-expanded="false" aria-controls="search" title="Search ( / )"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span>Search</span></button>
   <button id="t-labels" class="on" aria-pressed="true">Labels</button>
   <button id="t-spin" aria-pressed="false">Orbit</button>
   <select id="quality" aria-label="Detail level">
@@ -48,6 +52,47 @@
 </nav>
 
 <div class="panel" id="hint">Drag to move · scroll or pinch to zoom · right-drag or Ctrl-drag to turn · WASD to fly</div>
+
+<div class="panel" id="info" hidden role="status"></div>
+
+<div class="panel" id="search" hidden>
+  <input id="search-input" type="search" placeholder="Search food, printouts, hostels…" autocomplete="off" spellcheck="false" aria-label="Search places">
+  <div id="search-results" role="listbox" aria-label="Results"></div>
+</div>
+
+<button class="panel" id="chat-btn" aria-controls="chat"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Ask XLRI</button>
+<section class="panel" id="chat" hidden aria-label="Campus assistant">
+  <header><div><strong>Ask XLRI</strong><span>Timings, numbers and where things are</span></div><button id="chat-close" aria-label="Close assistant">×</button></header>
+  <div id="chat-main">
+    <div id="chat-log" aria-live="polite"></div>
+    <div id="chat-chips"></div>
+    <form id="chat-form"><input id="chat-input" placeholder="Ask anything about campus…" autocomplete="off" aria-label="Your question"><button type="submit">Send</button></form>
+    <button id="fb-open" type="button">Want to improve this map? Tell us how</button>
+  </div>
+  <form id="fb" hidden>
+    <h3>Want to improve this map?</h3>
+    <p class="fb-sub">Wrong timings, a missing place, a bug, an idea: anything helps.</p>
+    <label>What kind of feedback?
+      <select name="type">
+        <option>Suggestion</option>
+        <option>Wrong or missing info</option>
+        <option>Missing place</option>
+        <option>Something's broken</option>
+        <option>Other</option>
+      </select>
+    </label>
+    <label>How should we improve it?
+      <textarea name="message" rows="4" required maxlength="2000" placeholder="e.g. Bishu Da opens at 7 pm, and Brubeck sells…"></textarea>
+    </label>
+    <div class="fb-row">
+      <label>Name <span>(optional)</span><input name="name" maxlength="100" autocomplete="name"></label>
+      <label>Contact <span>(optional)</span><input name="contact" maxlength="150" placeholder="Email or phone"></label>
+    </div>
+    <input name="website" class="fb-trap" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p class="fb-status" id="fb-status" role="status"></p>
+    <div class="fb-actions"><button type="button" id="fb-back">Back</button><button type="submit" id="fb-send">Send feedback</button></div>
+  </form>
+</section>
 
 <div class="panel" id="where">
   <strong id="where-name">XLRI campus</strong>
@@ -77,6 +122,7 @@
     <li><b>Ground imagery:</b> Esri World Imagery (Esri, Maxar, Earthstar Geographics).</li>
     <li><b>Trees:</b> placed wherever the satellite image shows canopy; individual trees are not surveyed.</li>
     <li><b>Neighbourhood labels:</b> positioned approximately.</li>
+    <li><b>Timings and phone numbers:</b> shared by students; they can change, so call ahead.</li>
   </ul>
   <p class="small">An unofficial fan project, not affiliated with XLRI.</p>
   <form method="dialog"><button>Close</button></form>

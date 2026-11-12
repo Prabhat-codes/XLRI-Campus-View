@@ -17,7 +17,7 @@
  ],
  "buildings": [
   {
-   "name": "Hostel 2nd Year",
+   "name": null,
    "height": 19,
    "ring": [
     [
@@ -795,27 +795,27 @@
    ]
   },
   {
-   "name": null,
-   "height": 10.5,
+   "name": "Sports Block",
+   "height": 10,
    "ring": [
     [
-     86.188891,
+     86.188896,
      22.812991
     ],
     [
-     86.188998,
+     86.189006,
      22.812994
     ],
     [
-     86.189024,
+     86.189028,
      22.812876
     ],
     [
-     86.18906,
+     86.189095,
      22.812859
     ],
     [
-     86.189078,
+     86.189099,
      22.81263
     ],
     [
@@ -851,7 +851,7 @@
    ]
   },
   {
-   "name": "Hostel 1st Year",
+   "name": null,
    "height": 10.5,
    "ring": [
     [
@@ -1126,5 +1126,310 @@
     ]
    ]
   }
+ ],
+ "labels": [
+  {
+   "name": "STR (St Thomas Hostel)",
+   "lonlat": [
+    86.188713,
+    22.812786
+   ],
+   "h": 11,
+   "desc": "Part of the Old Hostel complex."
+  },
+  {
+   "name": "MTR Hostel",
+   "lonlat": [
+    86.189238,
+    22.812737
+   ],
+   "h": 11,
+   "desc": "Part of the Old Hostel complex."
+  },
+  {
+   "name": "Nilima Hostel",
+   "lonlat": [
+    86.189549,
+    22.812827
+   ],
+   "h": 11,
+   "desc": "Part of the Old Hostel complex."
+  },
+  {
+   "name": "Fr. Enright Hostel",
+   "lonlat": [
+    86.19034,
+    22.812991
+   ],
+   "h": 11,
+   "desc": "The biggest hostel on campus, right by the main gate."
+  },
+  {
+   "name": "NH Boys Hostel",
+   "lonlat": [
+    86.190142,
+    22.8191
+   ],
+   "h": 19,
+   "desc": "New Hostel, boys\u2019 side."
+  },
+  {
+   "name": "NH Girls Hostel",
+   "lonlat": [
+    86.190163,
+    22.818638
+   ],
+   "h": 19,
+   "desc": "New Hostel, girls\u2019 side, next to LC2."
+  },
+  {
+   "name": "MDP Hostel",
+   "lonlat": [
+    86.191608,
+    22.814087
+   ],
+   "h": 7,
+   "desc": "Rooms for people visiting from outside for management development programmes."
+  },
+  {
+   "name": "Bishu Da",
+   "lonlat": [
+    86.19089,
+    22.813407
+   ],
+   "h": 7,
+   "desc": "One of the oldest stalls on campus. Home of the legendary Pindi paratha, veg and non-veg."
+  },
+  {
+   "name": "Jampot",
+   "lonlat": [
+    86.191013,
+    22.81342
+   ],
+   "h": 13,
+   "desc": "Student-run caf\u00e9: momos, pasta and good coffee."
+  },
+  {
+   "name": "Aiyer's Caf\u00e9",
+   "lonlat": [
+    86.190972,
+    22.813999
+   ],
+   "h": 7,
+   "desc": "South Indian food."
+  },
+  {
+   "name": "Jaima",
+   "lonlat": [
+    86.19138,
+    22.81732
+   ],
+   "h": 5,
+   "desc": ""
+  },
+  {
+   "name": "Teachers' Residence",
+   "lonlat": [
+    86.190293,
+    22.816615
+   ],
+   "h": 12,
+   "desc": "Faculty housing, across from Diamond Jubilee Park."
+  },
+  {
+   "name": "JLT",
+   "lonlat": [
+    86.190029,
+    22.813072
+   ],
+   "h": 0,
+   "desc": "The lawn inside the L of Fr. Enright Hostel, where the parties happen."
+  },
+  {
+   "name": "Football Ground",
+   "lonlat": [
+    86.19155,
+    22.8123
+   ],
+   "h": 0,
+   "desc": "The big football ground beside the turf."
+  }
+ ],
+ "gates": [
+  {
+   "name": "Main Gate",
+   "lonlat": [
+    86.1906,
+    22.8128
+   ],
+   "desc": "Main entrance to campus, with the security check."
+  },
+  {
+   "name": "Exit Gate",
+   "lonlat": [
+    86.19071,
+    22.81913
+   ],
+   "desc": "Campus exit onto Marine Drive."
+  }
+ ],
+ "rename": {
+  "Aziz Juice Store": "Aziz Juice Center",
+  "TATA Auditorium": "Tata Auditorium",
+  "Security Check": null
+ },
+ "desc": {
+  "Tata Auditorium": "Home of placements: the placement process runs from here.",
+  "Jehangir Gandhy Library": "The campus library.",
+  "Learning Center 1": "Classrooms (LC1).",
+  "Learning Center 2": "Classrooms (LC2)."
+ },
+ "no_trees": [
+  [
+   [
+    86.19225,
+    22.8123
+   ],
+   [
+    86.192239,
+    22.812397
+   ],
+   [
+    86.192208,
+    22.812492
+   ],
+   [
+    86.192156,
+    22.81258
+   ],
+   [
+    86.192086,
+    22.81266
+   ],
+   [
+    86.192,
+    22.812729
+   ],
+   [
+    86.1919,
+    22.812785
+   ],
+   [
+    86.191789,
+    22.812826
+   ],
+   [
+    86.191672,
+    22.812851
+   ],
+   [
+    86.19155,
+    22.81286
+   ],
+   [
+    86.191428,
+    22.812851
+   ],
+   [
+    86.191311,
+    22.812826
+   ],
+   [
+    86.1912,
+    22.812785
+   ],
+   [
+    86.1911,
+    22.812729
+   ],
+   [
+    86.191014,
+    22.81266
+   ],
+   [
+    86.190944,
+    22.81258
+   ],
+   [
+    86.190892,
+    22.812492
+   ],
+   [
+    86.190861,
+    22.812397
+   ],
+   [
+    86.19085,
+    22.8123
+   ],
+   [
+    86.190861,
+    22.812203
+   ],
+   [
+    86.190892,
+    22.812108
+   ],
+   [
+    86.190944,
+    22.81202
+   ],
+   [
+    86.191014,
+    22.81194
+   ],
+   [
+    86.1911,
+    22.811871
+   ],
+   [
+    86.1912,
+    22.811815
+   ],
+   [
+    86.191311,
+    22.811774
+   ],
+   [
+    86.191428,
+    22.811749
+   ],
+   [
+    86.19155,
+    22.81174
+   ],
+   [
+    86.191672,
+    22.811749
+   ],
+   [
+    86.191789,
+    22.811774
+   ],
+   [
+    86.1919,
+    22.811815
+   ],
+   [
+    86.192,
+    22.811871
+   ],
+   [
+    86.192086,
+    22.81194
+   ],
+   [
+    86.192156,
+    22.81202
+   ],
+   [
+    86.192208,
+    22.812108
+   ],
+   [
+    86.192239,
+    22.812203
+   ]
+  ]
  ]
 }

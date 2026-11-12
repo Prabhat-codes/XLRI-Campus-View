@@ -1,10 +1,10 @@
 """One-off: turn roof outlines traced on the gridded zoom crops (pixel coords of crops of site/data/campus.jpg; crop origins and scales are in zoom_params.json)
 into tools/campus_overrides.json (lon/lat rings + heights)."""
-import json
+import json, math
 S,W,N,E=22.8085,86.1855,22.8210,86.1960; IW,IH=1957,2528
 P=json.load(open('tools/zoom_params.json'))
 T=[ # crop, label or None, height m, outline px
-('A','Hostel 2nd Year',19,[(160,245),(300,250),(420,330),(465,340),(475,640),(500,680),(500,1180),(480,1250),(240,1265),(205,1200),(180,700),(160,400)]),
+('A',None,19,[(160,245),(300,250),(420,330),(465,340),(475,640),(500,680),(500,1180),(480,1250),(240,1265),(205,1200),(180,700),(160,400)]),
 ('B','Learning Center 2',16,[(545,225),(800,285),(790,420),(985,485),(940,760),(880,775),(860,900),(700,935),(440,915),(430,800),(330,810),(320,700),(290,640),(320,345),(520,345)]),
 ('B',None,9,[(305,1040),(470,1035),(480,1150),(310,1160)]),
 ('B',None,9,[(500,1065),(700,1065),(700,1180),(505,1190)]),
@@ -31,9 +31,9 @@ T=[ # crop, label or None, height m, outline px
 ('G',None,10.5,[(148,430),(333,425),(335,470),(150,480)]),
 ('G',None,10.5,[(133,325),(195,322),(200,432),(148,432)]),
 ('G',None,10.5,[(280,318),(322,318),(333,425),(285,428)]),
-('G',None,10.5,[(335,250),(395,248),(410,320),(430,330),(440,470),(360,480),(345,330)]),
+('G','Sports Block',10,[(338,250),(400,248),(412,320),(450,330),(452,470),(360,480),(345,330)]),
 ('G',None,10.5,[(455,375),(600,362),(605,440),(462,450)]),
-('G','Hostel 1st Year',10.5,[(610,300),(680,295),(690,270),(800,280),(805,350),(770,360),(770,420),(710,425),(705,385),(615,390)]),
+('G',None,10.5,[(610,300),(680,295),(690,270),(800,280),(805,350),(770,360),(770,420),(710,425),(705,385),(615,390)]),
 ('G',None,10.5,[(860,300),(1085,287),(1088,350),(900,385),(865,380)]),
 ('G',None,4,[(910,385),(1035,378),(1038,410),(912,415)]),
 ('G',None,10.5,[(1100,95),(1180,90),(1195,225),(1200,230),(1210,330),(1095,340),(1090,265),(1120,260),(1115,225)]),
@@ -44,6 +44,36 @@ T=[ # crop, label or None, height m, outline px
 ('H',None,9,[(500,1050),(755,1020),(770,1080),(745,1130),(545,1155),(505,1100)]),
 ('H',None,6,[(700,810),(740,800),(770,1010),(712,1015)]),
 ]
+# campus names from people who live there; Google Maps confirms Bishu Da's position
+LABELS=[ # (crop, x, y) or ('ll', lat, lon); name; label height m; description
+ ('G',235,375,'STR (St Thomas Hostel)',11,'Part of the Old Hostel complex.'),
+ ('G',530,405,'MTR Hostel',11,'Part of the Old Hostel complex.'),
+ ('G',705,350,'Nilima Hostel',11,'Part of the Old Hostel complex.'),
+ ('G',1150,250,'Fr. Enright Hostel',11,'The biggest hostel on campus, right by the main gate.'),
+ ('A',330,520,'NH Boys Hostel',19,'New Hostel, boys’ side.'),
+ ('A',350,1000,'NH Girls Hostel',19,'New Hostel, girls’ side, next to LC2.'),
+ ('H',885,330,'MDP Hostel',7,'Rooms for people visiting from outside for management development programmes.'),
+ ('H',360,870,'Bishu Da',7,'One of the oldest stalls on campus. Home of the legendary Pindi paratha, veg and non-veg.'),
+ ('H',450,860,'Jampot',13,'Student-run café: momos, pasta and good coffee.'),
+ ('H',420,400,"Aiyer's Café",7,'South Indian food.'),
+ ('ll',22.81732,86.19138,'Jaima',5,''),
+ ('E',550,815,"Teachers' Residence",12,'Faculty housing, across from Diamond Jubilee Park.'),
+ ('G',975,200,'JLT',0,'The lawn inside the L of Fr. Enright Hostel, where the parties happen.'),
+ ('ll',22.8123,86.19155,'Football Ground',0,'The big football ground beside the turf.'),
+]
+GATES=[ # snapped onto the nearest road when baking
+ ('ll',22.8128,86.1906,'Main Gate','Main entrance to campus, with the security check.'),
+ ('ll',22.81913,86.19071,'Exit Gate','Campus exit onto Marine Drive.'),
+]
+RENAME={'Aziz Juice Store':'Aziz Juice Center','TATA Auditorium':'Tata Auditorium','Security Check':None}
+DESC={'Tata Auditorium':'Home of placements: the placement process runs from here.',
+      'Jehangir Gandhy Library':'The campus library.','Learning Center 1':'Classrooms (LC1).','Learning Center 2':'Classrooms (LC2).'}
+
+def ll(crop,x,y):
+    if crop=='ll': return [round(y,6),round(x,6)]
+    p=P[crop]; X=p['x0']+x/p['Z']; Y=p['y0']+y/p['Z']
+    return [round(W+X/IW*(E-W),6), round(N-Y/IH*(N-S),6)]
+
 out=[]
 for crop,name,h,px in T:
     p=P[crop]
@@ -54,6 +84,11 @@ for crop,name,h,px in T:
     out.append({"name":name,"height":h,"ring":ring})
 doc={"_note":"Hand-traced XLRI campus roof outlines (from the satellite image) with estimated heights. Each entry replaces whatever map footprint sits under it. 'name' puts a label on that part.",
      "replace_names":["Hostel 2nd Year","Learning Center 2","International Center","Fr. Tome","A-Block","B-Block","C-Block","D-Block","Learning Center 1","Admin Building","Hostel 1st Year","TATA Auditorium","Jehangir Gandhy Library"],
-     "buildings":out}
+     "buildings":out,
+     "labels":[{"name":n,"lonlat":ll(c,x,y),"h":h,"desc":d} for c,x,y,n,h,d in LABELS],
+     "gates":[{"name":n,"lonlat":ll(c,x,y),"desc":d} for c,x,y,n,d in GATES],
+     "rename":RENAME,"desc":DESC,
+     # no trees are placed inside these rings (the football ground's grass reads as canopy otherwise)
+     "no_trees":[[[round(86.19155+0.00070*math.cos(t*math.pi/18),6),round(22.8123+0.00056*math.sin(t*math.pi/18),6)] for t in range(36)]]}
 json.dump(doc,open('tools/campus_overrides.json','w'),indent=1)
 print(len(out))

@@ -1,0 +1,744 @@
+{
+  "_note": "Campus directory: descriptions, search tags, opening hours (IST, 24h; an end earlier than the start runs past midnight) and phone numbers. 'name' must match a label on the map. hours: null means not known; 'note' is shown instead. 'usually' marks hours a place is typically open when exact timings vary. Edit freely, no rebake needed. feedbackUrl: the Google Apps Script web-app URL that appends feedback to the sheet (see tools/feedback_sheet.gs).",
+  "feedbackUrl": "",
+  "places": [
+    {
+      "name": "Aiyer's Café",
+      "aliases": [
+        "ayers",
+        "aiyers",
+        "aiyer",
+        "iyers",
+        "iyer",
+        "aiyers cafe",
+        "aiyer s cafe",
+        "aiyers café"
+      ],
+      "desc": "The best South Indian on campus, with some North Indian too.",
+      "tags": [
+        "south indian",
+        "dosa",
+        "idli",
+        "vada",
+        "uttapam",
+        "sambar",
+        "breakfast",
+        "north indian",
+        "food",
+        "meals",
+        "lunch",
+        "dinner",
+        "restaurant",
+        "veg"
+      ],
+      "hours": [
+        [
+          "08:00",
+          "21:00"
+        ]
+      ],
+      "phone": "+91 94962 94335"
+    },
+    {
+      "name": "Jampot",
+      "aliases": [
+        "jam pot"
+      ],
+      "desc": "Student-run café with pasta, momos and good coffee. Open late into the night.",
+      "tags": [
+        "pasta",
+        "momos",
+        "coffee",
+        "cafe",
+        "café",
+        "late night",
+        "midnight",
+        "night food",
+        "snacks",
+        "food",
+        "student run",
+        "hangout"
+      ],
+      "hours": [
+        [
+          "18:00",
+          "04:00"
+        ]
+      ],
+      "note": "Closes around 3–4 am",
+      "phone": "+91 93040 73115"
+    },
+    {
+      "name": "Bishu Da",
+      "aliases": [
+        "bishu",
+        "bishu da",
+        "bishuda",
+        "bishu cafe",
+        "bishu canteen"
+      ],
+      "desc": "One of the oldest stalls on campus. Home of the legendary Pindi paratha, veg and non-veg.",
+      "tags": [
+        "paratha",
+        "pindi paratha",
+        "pindi",
+        "veg",
+        "non veg",
+        "non-veg",
+        "food",
+        "late night",
+        "night food",
+        "midnight",
+        "canteen",
+        "delivery",
+        "snacks",
+        "oldest"
+      ],
+      "hours": null,
+      "usually": [
+        [
+          "20:00",
+          "03:00"
+        ]
+      ],
+      "note": "Opens at different times through the day; usually open at night",
+      "phone": "+91 99341 11398",
+      "phoneLabel": "Delivery"
+    },
+    {
+      "name": "Shaligram",
+      "aliases": [
+        "shaligram store"
+      ],
+      "desc": "The stationery shop: pretty much everything you need for class.",
+      "tags": [
+        "stationery",
+        "stationary",
+        "pens",
+        "pen",
+        "notebook",
+        "notebooks",
+        "files",
+        "paper",
+        "supplies",
+        "shop",
+        "store",
+        "exam"
+      ],
+      "hours": [
+        [
+          "10:00",
+          "21:00"
+        ]
+      ],
+      "phone": null
+    },
+    {
+      "name": "Aziz Juice Center",
+      "aliases": [
+        "aziz",
+        "aziz bhaiya",
+        "aziz juice",
+        "juice center"
+      ],
+      "desc": "Fresh juices, right next to Brubeck. Open all day and late into the night.",
+      "tags": [
+        "juice",
+        "fresh juice",
+        "fruit",
+        "drinks",
+        "beverages",
+        "late night",
+        "summer",
+        "healthy"
+      ],
+      "hours": [
+        [
+          "11:00",
+          "04:00"
+        ]
+      ],
+      "note": "Closed only 4–11 am",
+      "phone": "+91 70049 08746"
+    },
+    {
+      "name": "Jaima",
+      "aliases": [
+        "jai maa",
+        "jaimaa",
+        "jai ma"
+      ],
+      "desc": "Next to Brubeck.",
+      "tags": [
+        "shop",
+        "jai maa"
+      ],
+      "hours": null,
+      "phone": "+91 76674 48925"
+    },
+    {
+      "name": "Gents Saloon",
+      "aliases": [
+        "trendz",
+        "trendz salon",
+        "salon",
+        "saloon",
+        "barber"
+      ],
+      "desc": "Trendz men's salon.",
+      "tags": [
+        "salon",
+        "saloon",
+        "haircut",
+        "hair cut",
+        "hair",
+        "barber",
+        "shave",
+        "beard",
+        "trim",
+        "grooming",
+        "trendz",
+        "men"
+      ],
+      "hours": null,
+      "phone": "+91 98355 89133"
+    },
+    {
+      "name": "Jehangir Gandhy Library",
+      "aliases": [
+        "library",
+        "jg library",
+        "jehangir gandhi library",
+        "jehangir library",
+        "jgl"
+      ],
+      "desc": "The campus library. Open round the clock except early morning.",
+      "tags": [
+        "library",
+        "books",
+        "study",
+        "reading",
+        "quiet",
+        "journals",
+        "late night study",
+        "24x7",
+        "exam"
+      ],
+      "hours": [
+        [
+          "08:00",
+          "06:00"
+        ]
+      ],
+      "note": "Closed about 6–8 am",
+      "phone": null
+    },
+    {
+      "name": "Learning Center 1",
+      "aliases": [
+        "lc1",
+        "lc 1",
+        "learning centre 1",
+        "learning center 1"
+      ],
+      "desc": "Classrooms (LC1). Printouts available here.",
+      "tags": [
+        "printout",
+        "printouts",
+        "print",
+        "printing",
+        "xerox",
+        "photocopy",
+        "copies",
+        "classroom",
+        "classes",
+        "lecture",
+        "lc1"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Learning Center 2",
+      "aliases": [
+        "lc2",
+        "lc 2",
+        "learning centre 2",
+        "learning center 2"
+      ],
+      "desc": "Classrooms (LC2). Printouts available here.",
+      "tags": [
+        "printout",
+        "printouts",
+        "print",
+        "printing",
+        "xerox",
+        "photocopy",
+        "copies",
+        "classroom",
+        "classes",
+        "lecture",
+        "lc2"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Tata Auditorium",
+      "aliases": [
+        "auditorium",
+        "tata audi",
+        "audi"
+      ],
+      "desc": "Home of placements: the placement process runs from here.",
+      "tags": [
+        "placements",
+        "placement",
+        "recruitment",
+        "interviews",
+        "jobs",
+        "auditorium",
+        "events",
+        "talks"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Main Gate",
+      "aliases": [
+        "main gate",
+        "security",
+        "entrance"
+      ],
+      "desc": "Main entrance to campus, with the security check.",
+      "tags": [
+        "gate",
+        "entrance",
+        "entry",
+        "security",
+        "security check",
+        "visitors",
+        "cab",
+        "auto"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Exit Gate",
+      "aliases": [
+        "exit gate",
+        "back gate",
+        "north gate"
+      ],
+      "desc": "Campus exit onto Marine Drive, by Dadoos and Campus Cafe.",
+      "tags": [
+        "gate",
+        "exit",
+        "marine drive",
+        "river"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Fr. Enright Hostel",
+      "aliases": [
+        "enright",
+        "enright hostel",
+        "father enright",
+        "fr enright",
+        "frh"
+      ],
+      "desc": "The biggest hostel on campus, right by the main gate. The JLT lawn sits inside its L.",
+      "tags": [
+        "hostel",
+        "rooms",
+        "residence",
+        "accommodation",
+        "old hostel",
+        "biggest hostel"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Nilima Hostel",
+      "aliases": [
+        "nilima"
+      ],
+      "desc": "Part of the Old Hostel complex.",
+      "tags": [
+        "hostel",
+        "rooms",
+        "residence",
+        "accommodation",
+        "old hostel",
+        "oh"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "MTR Hostel",
+      "aliases": [
+        "mtr"
+      ],
+      "desc": "Part of the Old Hostel complex, next to the sports block.",
+      "tags": [
+        "hostel",
+        "rooms",
+        "residence",
+        "accommodation",
+        "old hostel",
+        "oh"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "STR (St Thomas Hostel)",
+      "aliases": [
+        "str",
+        "st thomas",
+        "st thomas hostel",
+        "saint thomas"
+      ],
+      "desc": "Part of the Old Hostel complex, next to the sports block.",
+      "tags": [
+        "hostel",
+        "rooms",
+        "residence",
+        "accommodation",
+        "old hostel",
+        "oh"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "NH Boys Hostel",
+      "aliases": [
+        "nh boys",
+        "new hostel boys",
+        "boys hostel"
+      ],
+      "desc": "New Hostel, boys' side (the half nearer Marine Drive).",
+      "tags": [
+        "hostel",
+        "rooms",
+        "residence",
+        "accommodation",
+        "new hostel",
+        "nh",
+        "boys"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "NH Girls Hostel",
+      "aliases": [
+        "nh girls",
+        "new hostel girls",
+        "girls hostel"
+      ],
+      "desc": "New Hostel, girls' side, next to LC2.",
+      "tags": [
+        "hostel",
+        "rooms",
+        "residence",
+        "accommodation",
+        "new hostel",
+        "nh",
+        "girls"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "MDP Hostel",
+      "aliases": [
+        "mdp",
+        "mdp hostel"
+      ],
+      "desc": "Rooms for people visiting from outside for management development programmes.",
+      "tags": [
+        "hostel",
+        "mdp",
+        "guests",
+        "visitors",
+        "executive",
+        "guest house",
+        "accommodation",
+        "parents"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Sports Block",
+      "aliases": [
+        "sports block",
+        "badminton court",
+        "gym",
+        "pool room",
+        "tt room"
+      ],
+      "desc": "Between MTR and St Thomas hostels: badminton courts, the gym, the pool room and the TT room.",
+      "tags": [
+        "badminton",
+        "gym",
+        "workout",
+        "fitness",
+        "exercise",
+        "weights",
+        "pool",
+        "pool table",
+        "billiards",
+        "snooker",
+        "tt",
+        "table tennis",
+        "ping pong",
+        "indoor games",
+        "sports"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "JLT",
+      "aliases": [
+        "jlt",
+        "jlt lawn"
+      ],
+      "desc": "The lawn inside the L of Fr. Enright Hostel, where all the parties happen.",
+      "tags": [
+        "lawn",
+        "party",
+        "parties",
+        "events",
+        "hangout",
+        "dj",
+        "celebration",
+        "open air"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Football Ground",
+      "aliases": [
+        "football ground",
+        "ground"
+      ],
+      "desc": "The big football ground beside the turf.",
+      "tags": [
+        "football",
+        "soccer",
+        "ground",
+        "field",
+        "sports",
+        "running",
+        "jogging",
+        "athletics"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Football Turf",
+      "aliases": [
+        "turf"
+      ],
+      "desc": "Synthetic football turf.",
+      "tags": [
+        "football",
+        "turf",
+        "futsal",
+        "sports"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Tennis Court",
+      "aliases": [
+        "tennis"
+      ],
+      "desc": "Tennis court beside the football ground.",
+      "tags": [
+        "tennis",
+        "sports",
+        "court"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Diamond Jubilee Park",
+      "aliases": [
+        "djp",
+        "jubilee park campus"
+      ],
+      "desc": "Small park between the GMP blocks and the Teachers’ Residence.",
+      "tags": [
+        "park",
+        "garden",
+        "walk",
+        "green",
+        "sit"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Teachers' Residence",
+      "aliases": [
+        "teachers residence",
+        "faculty residence",
+        "faculty housing",
+        "professors"
+      ],
+      "desc": "Faculty housing, across from Diamond Jubilee Park.",
+      "tags": [
+        "faculty",
+        "teachers",
+        "professors",
+        "residence",
+        "housing",
+        "staff quarters"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Campus Cafe",
+      "aliases": [
+        "campus cafe"
+      ],
+      "desc": "Café by the exit gate.",
+      "tags": [
+        "cafe",
+        "café",
+        "food",
+        "snacks"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Dadoos",
+      "aliases": [
+        "dadoo",
+        "dadus",
+        "dadu"
+      ],
+      "desc": "Food spot by the exit gate.",
+      "tags": [
+        "food",
+        "snacks"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "XLRI Dhaba",
+      "aliases": [
+        "dhaba"
+      ],
+      "desc": "The campus dhaba.",
+      "tags": [
+        "dhaba",
+        "food",
+        "meals"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "GMP Mess",
+      "aliases": [
+        "gmp mess"
+      ],
+      "desc": "Mess for the GMP residence blocks.",
+      "tags": [
+        "mess",
+        "food",
+        "meals",
+        "gmp"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "Admin Building",
+      "aliases": [
+        "admin",
+        "administration"
+      ],
+      "desc": "The administration building.",
+      "tags": [
+        "admin",
+        "administration",
+        "office",
+        "offices"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "A-Block",
+      "aliases": [],
+      "desc": "Part of the GMP residence.",
+      "tags": [
+        "gmp",
+        "gmp residence",
+        "residence",
+        "rooms"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "B-Block",
+      "aliases": [],
+      "desc": "Part of the GMP residence.",
+      "tags": [
+        "gmp",
+        "gmp residence",
+        "residence",
+        "rooms"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "C-Block",
+      "aliases": [],
+      "desc": "Part of the GMP residence.",
+      "tags": [
+        "gmp",
+        "gmp residence",
+        "residence",
+        "rooms"
+      ],
+      "hours": null,
+      "phone": null
+    },
+    {
+      "name": "D-Block",
+      "aliases": [],
+      "desc": "Part of the GMP residence.",
+      "tags": [
+        "gmp",
+        "gmp residence",
+        "residence",
+        "rooms"
+      ],
+      "hours": null,
+      "phone": null
+    }
+  ]
+}

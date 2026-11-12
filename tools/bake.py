@@ -186,6 +186,10 @@ def main():
     drop = set(ov["replace_names"])
     blds = [b for b in blds if b["name"] not in drop and not any(inside(b["c"], f["p"]) for f in fixed)] + fixed
     print("campus overrides", len(fixed))
+    RENAME, DESC = ov.get("rename", {}), ov.get("desc", {})
+    for b in blds:
+        if b["name"] in RENAME:
+            b["name"] = RENAME[b["name"]]
 
     # campus = hull around the named XLRI buildings, pushed out a little
     xl0, xl1 = proj(XL_W, XL_S), proj(XL_E, XL_N)
@@ -239,7 +243,10 @@ def main():
         for x, y in pts:
             out += struct.pack("<2h", max(-32000, min(32000, round(x * 10))), max(-32000, min(32000, round(y * 10))))
         if name and (in_campus or typ == 3):
-            labels.append({"n": name, "x": round(cx, 1), "y": round(cy, 1), "h": round(h, 1), "k": "campus" if in_campus else "poi"})
+            labels.append({"n": name, "x": round(cx, 1), "y": round(cy, 1), "h": round(h, 1), "k": "campus" if in_campus else "poi", "d": DESC.get(name, "")})
+    for l in ov.get("labels", []):
+        x, y = proj(*l["lonlat"])
+        labels.append({"n": l["name"], "x": round(x, 1), "y": round(y, 1), "h": l["h"], "k": "campus", "d": l["desc"]})
     open(os.path.join(OUT, "buildings.bin"), "wb").write(out)
     print("buildings", len(blds), "campus", n_campus, "bytes", len(out))
 
@@ -311,6 +318,29 @@ def main():
                     bd, best = dd, (r[i], r[i + 1])
         if best:
             labels.append({"n": n, "x": best[0], "y": best[1], "h": 0, "k": "road"})
+    # gates stand across the nearest real road, square to it
+    gates = []
+    for g in ov.get("gates", []):
+        px_, py_ = proj(*g["lonlat"])
+        best = None
+        for r in roads:
+            if r[0] < 4:
+                continue
+            for i in range(1, len(r) - 3, 2):
+                ax, ay, bx, by = r[i], r[i + 1], r[i + 2], r[i + 3]
+                dx, dy = bx - ax, by - ay
+                L2 = dx * dx + dy * dy
+                if L2 < 0.01:
+                    continue
+                t = max(0, min(1, ((px_ - ax) * dx + (py_ - ay) * dy) / L2))
+                qx, qy = ax + dx * t, ay + dy * t
+                dd = math.hypot(qx - px_, qy - py_)
+                if best is None or dd < best[0]:
+                    best = (dd, qx, qy, math.atan2(dy, dx), r[0])
+        dd, qx, qy, ang, wd = best
+        print("gate", g["name"], "snapped", round(dd, 1), "m")
+        gates.append({"n": g["name"], "x": round(qx, 2), "y": round(qy, 2), "a": round(ang, 4), "w": wd})
+        labels.append({"n": g["name"], "x": round(qx, 1), "y": round(qy, 1), "h": 0, "k": "campus", "d": g["desc"]})
     print("roads", len(roads), "water", len(water), "labels", len(labels))
 
     # ---------------- trees from the satellite image ----------------
@@ -331,6 +361,8 @@ def main():
     for e in osm:
         if e["type"] == "way" and e.get("tags", {}).get("leisure") == "pitch":
             d.polygon([to_px(*q) for q in ring_of(e)], fill=255)
+    for ring in ov.get("no_trees", []):
+        d.polygon([to_px(*proj(lo, la)) for lo, la in ring], fill=255)
     block = np.asarray(block.filter(ImageFilter.MaxFilter(3))) > 0
     ok = veg & ~block
     random.seed(7)
@@ -372,7 +404,7 @@ def main():
         "campusImage": [round(c0[0], 1), round(c0[1], 1), round(c1[0], 1), round(c1[1], 1)],
         "campus": [round(v, 1) for q in campus for v in q],
         "counts": {"buildings": len(blds), "campus": n_campus, "trees": nt},
-        "labels": labels, "roads": roads, "water": water,
+        "labels": labels, "roads": roads, "water": water, "gates": gates,
     }
     json.dump(meta, open(os.path.join(OUT, "meta.json"), "w", encoding="utf8"), ensure_ascii=False, separators=(",", ":"))
     print("meta.json", os.path.getsize(os.path.join(OUT, "meta.json")) // 1024, "KB")

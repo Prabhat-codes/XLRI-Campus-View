@@ -8,6 +8,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { setupPlaces } from './places.js';
 
 const $ = (id) => document.getElementById(id);
 const canvas = $('view');
@@ -90,19 +91,21 @@ const sunDir = new THREE.Vector3(0, 1, 0);
 let nightAmt = 0;
 
 // ---------------------------------------------------------------- data
-let meta, labelsOn = true, satTex = null;   // satTex: shared by the ground and the roofs
+let meta, labelsOn = true, satTex = null, PL = null;   // PL: campus directory (places.js)   // satTex: shared by the ground and the roofs
 const nightMats = [];   // materials that only show after dark
 let trees = null, treeCount = 0;
 
 async function boot() {
-  const [m, bBuf, tBuf, ground, campusTex] = await Promise.all([
+  const [m, bBuf, tBuf, ground, campusTex, placesData] = await Promise.all([
     fetch('data/meta.json').then((r) => r.json()).then((v) => (step('Laying out streets'), v)),
     fetch('data/buildings.bin').then((r) => r.arrayBuffer()).then((v) => (step('Reading building footprints'), v)),
     fetch('data/trees.bin').then((r) => r.arrayBuffer()).then((v) => (step('Counting trees'), v)),
     loadTex('data/ground.jpg').then((v) => (step('Unrolling the satellite image'), v)),
     loadTex('data/campus.jpg').then((v) => (step('Sharpening the campus'), v)),
+    fetch('data/places.json').then((r) => (r.ok ? r.json() : { places: [] })).catch(() => ({ places: [] })),
   ]);
   meta = m;
+  PL = setupPlaces(placesData, { goTo });
   buildGround(ground, campusTex);
   buildWater();
   await nextFrame();
@@ -112,6 +115,8 @@ async function boot() {
   buildTrees(new Int16Array(tBuf));
   window.__map.timing = { buildingsMs: Math.round(t1 - t0), treesMs: Math.round(performance.now() - t1) };
   buildRoads();
+  await document.fonts.load('700 92px "Cormorant Garamond"').catch(() => {});   // the gate sign is drawn with it
+  for (const g of meta.gates || []) buildGate(g);
   buildRoadGlow();
   buildLabels();
   buildPlaces();
@@ -421,6 +426,72 @@ function buildRoads() {
   scene.add(shoulder, top);
 }
 
+// ---------------------------------------------------------------- campus gates
+// Modelled on the XLRI main gate: a tall ochre pillar with the emblem panel, a cream pillar,
+// an ochre beam carrying the name, and red sliding gates. Local X runs across the road, Z along it.
+let gateTex = null;
+function makeGateTextures() {
+  const sign = document.createElement('canvas');
+  sign.width = 1024; sign.height = 128;
+  let c = sign.getContext('2d');
+  c.fillStyle = '#c98b45'; c.fillRect(0, 0, 1024, 128);
+  c.fillStyle = 'rgba(0,0,0,0.12)'; c.fillRect(0, 116, 1024, 12);
+  c.textBaseline = 'middle';
+  c.fillStyle = '#7b1d18'; c.font = '700 92px "Cormorant Garamond", Georgia, serif';
+  c.fillText('XLRI', 250, 62);
+  c.fillStyle = '#fff6e6'; c.font = '500 40px Inter, Arial, sans-serif';
+  c.fillText('Xavier School of Management', 505, 64);
+  const emblem = document.createElement('canvas');
+  emblem.width = emblem.height = 128;
+  c = emblem.getContext('2d');
+  c.fillStyle = '#f2e6cc'; c.fillRect(0, 0, 128, 128);
+  c.fillStyle = '#1d4f9c'; c.fillRect(10, 10, 108, 108);
+  c.strokeStyle = '#ffffff'; c.lineWidth = 6;
+  c.beginPath(); c.moveTo(34, 30); c.lineTo(94, 30); c.lineTo(94, 70); c.quadraticCurveTo(94, 96, 64, 104); c.quadraticCurveTo(34, 96, 34, 70); c.closePath(); c.stroke();
+  c.beginPath(); c.moveTo(64, 42); c.lineTo(64, 88); c.moveTo(46, 58); c.lineTo(82, 58); c.stroke();
+  const bars = document.createElement('canvas');
+  bars.width = 256; bars.height = 64;
+  c = bars.getContext('2d');
+  c.fillStyle = '#b8261f';
+  c.fillRect(0, 0, 256, 7); c.fillRect(0, 57, 256, 7); c.fillRect(0, 30, 256, 5); c.fillRect(0, 0, 7, 64); c.fillRect(249, 0, 7, 64);
+  for (let x = 16; x < 250; x += 16) c.fillRect(x, 0, 4, 64);
+  const t = (cv) => { const tx = new THREE.CanvasTexture(cv); tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 8; return tx; };
+  gateTex = { sign: t(sign), emblem: t(emblem), bars: t(bars) };
+}
+function buildGate(g) {
+  if (!gateTex) makeGateTextures();
+  const ochre = new THREE.MeshStandardMaterial({ color: 0xc98b45, roughness: 0.8 });
+  const cream = new THREE.MeshStandardMaterial({ color: 0xece0c6, roughness: 0.85 });
+  const signM = new THREE.MeshStandardMaterial({ map: gateTex.sign, roughness: 0.75 });
+  const grp = new THREE.Group();
+  const box = (w, h, d, x, y, z, m) => { const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); b.position.set(x, y, z); b.castShadow = b.receiveShadow = true; grp.add(b); return b; };
+  const o = g.w / 2 + 1.6;                         // half of the clear opening
+  const L = -o - 2.6, R = o + 1.9;                 // outer edges of the two pillars
+  box(2.6, 7.8, 2.0, -o - 1.3, 3.9, 0, ochre);     // tall pillar with the emblem
+  box(2.9, 0.35, 2.3, -o - 1.3, 7.95, 0, cream);   // its cap
+  box(1.9, 7.0, 1.7, o + 0.95, 3.5, 0, cream);     // plain pillar
+  box(3.2, 2.2, 0.35, o + 3.4, 1.1, 0, cream);     // low wall running off the plain pillar
+  box(3.0, 2.6, 0.35, L - 1.5, 1.3, 0, cream);     // and off the tall one
+  box(R - L, 1.5, 1.3, (L + R) / 2, 6.25, 0, [ochre, ochre, ochre, cream, signM, signM]);   // beam: sign on both faces, cream underside
+  box(R - L, 0.18, 1.5, (L + R) / 2, 7.08, 0, cream);
+  for (const s of [1, -1]) {                       // emblem panel, both faces of the tall pillar
+    const p = new THREE.Mesh(new THREE.PlaneGeometry(1.7, 1.7), new THREE.MeshStandardMaterial({ map: gateTex.emblem, roughness: 0.6 }));
+    p.position.set(-o - 1.3, 3.4, s * 1.01);
+    p.rotation.y = s > 0 ? 0 : Math.PI;
+    grp.add(p);
+  }
+  const barsM = new THREE.MeshStandardMaterial({ map: gateTex.bars, alphaTest: 0.5, side: THREE.DoubleSide, roughness: 0.6 });
+  for (const s of [-1, 1]) {                       // sliding gates, pulled most of the way open
+    const leaf = new THREE.Mesh(new THREE.PlaneGeometry(o * 0.95, 2.1), barsM);
+    leaf.position.set(s * (o - o * 0.95 / 2 + 0.1), 1.05, s * 0.25 + 0.6);
+    leaf.castShadow = true;
+    grp.add(leaf);
+  }
+  grp.position.set(g.x, 0, -g.y);
+  grp.rotation.y = Math.atan2(Math.cos(g.a), -Math.sin(g.a));
+  scene.add(grp);
+}
+
 // ---------------------------------------------------------------- night: lit streets and lamps
 function buildRoadGlow() {
   const pos = [], lamps = [];
@@ -468,9 +539,11 @@ function buildLabels() {
   const rank = { home: -1, area: 0, water: 1, poi: 2, road: 2.5, campus: 3 };
   for (const l of [{ n: 'XLRI', x: 0, y: 0, h: 0, k: 'home' }, ...meta.labels]) {
     const el = document.createElement('div');
-    el.className = 'lb off ' + l.k;
+    el.className = 'lb off ' + l.k + (l.d || PL.get(l.n) ? ' has-d' : '');
     el.textContent = l.n;
-    el.addEventListener('click', () => flyTo({ x: l.x, y: l.y, dist: l.k === 'area' ? 1500 : l.k === 'campus' ? 380 : l.k === 'home' ? HOME.dist : 700, tilt: 58 }));
+    el.addEventListener('click', () => { flyToLabel(l); PL.showCard(l, true); });
+    el.addEventListener('mouseenter', () => PL.showCard(l, false));
+    el.addEventListener('mouseleave', () => PL.hideCard(false));
     host.appendChild(el);
     labels.push({ ...l, el, pos: new THREE.Vector3(l.x, l.h + (l.k === 'area' || l.k === 'home' ? 30 : 9), -l.y), w: l.n.length * 7.2 + 22, rank: rank[l.k], shown: false });
   }
@@ -539,6 +612,18 @@ function stepFly(now) {
   if (k >= 1) { fly = null; controls.enabled = true; }
 }
 function cancelFly() { if (fly) { fly = null; controls.enabled = true; } $('hint').classList.add('gone'); }
+function flyToLabel(l) {
+  flyTo({ x: l.x, y: l.y, dist: l.k === 'area' ? 1500 : l.k === 'campus' ? 260 : l.k === 'home' ? HOME.dist : 700, tilt: 58 });
+}
+// used by search and the assistant: fly to a named place and pin its card
+function goTo(name, quiet) {
+  const l = labels.find((x) => x.n === name);
+  if (!l) return;
+  flyToLabel(l);
+  if (!quiet || innerWidth > 760) PL.showCard(l, true);
+}
+// the card hides again as soon as the map itself is touched
+canvas.addEventListener('pointerdown', () => PL && PL.hideCard(true));
 canvas.addEventListener('pointerdown', cancelFly);
 canvas.addEventListener('wheel', cancelFly, { passive: true });
 
@@ -547,9 +632,12 @@ function buildPlaces() {
   const list = [
     HOME,
     { name: 'Learning Centre', ref: 'Learning Center 2', dist: 330, heading: 20, tilt: 62 },
-    { name: 'Hostels', ref: 'Hostel 2nd Year', dist: 360, heading: 150, tilt: 60 },
+    { name: 'Main Gate', ref: 'Main Gate', dist: 120, heading: 15, tilt: 70 },
+    { name: 'New Hostel', ref: 'NH Boys Hostel', dist: 380, heading: 150, tilt: 60 },
+    { name: 'Old Hostels', ref: 'Nilima Hostel', dist: 340, heading: 0, tilt: 58 },
+    { name: 'Bishu Da', ref: 'Bishu Da', dist: 140, heading: 70, tilt: 62 },
     { name: 'Library', ref: 'Jehangir Gandhy Library', dist: 300, heading: -40, tilt: 60 },
-    { name: 'Tata Auditorium', ref: 'TATA Auditorium', dist: 300, heading: 60, tilt: 60 },
+    { name: 'Tata Auditorium', ref: 'Tata Auditorium', dist: 300, heading: 60, tilt: 60 },
     { name: 'Jubilee Park', ref: 'Jubilee Park', dist: 1300, heading: 35, tilt: 58 },
     { name: 'Jayanti Sarovar', ref: 'Jayanti Sarovar', dist: 800, heading: -60, tilt: 64 },
     { name: 'Zoo', ref: 'Tata Zoological Park', dist: 700, heading: 100, tilt: 58 },

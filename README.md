@@ -28,6 +28,9 @@ Then open http://localhost:5173.
 | Ground and roof imagery | Esri World Imagery | Zoom 17 for the whole area, zoom 18 over the campus (the sharpest available). Check Esri's terms before any commercial use. |
 | 67,065 trees | Detected from green canopy in the satellite image | Positions are plausible, not surveyed. |
 | Neighbourhood labels | Hand-placed in `tools/bake.py` | Approximate. |
+| Campus directory | `site/data/places.json`, from students | Descriptions, search tags, opening hours (IST) and phone numbers behind the hover cards, the search box and the "Ask XLRI" assistant. Edit it directly; no rebake needed. Each `name` must match a map label. |
+
+The assistant runs entirely in the browser (`site/places.js`): it matches questions against names, aliases and tags, and works out what is open from the current time in IST. It has no server and no API key.
 
 ## Rebuild the data
 
